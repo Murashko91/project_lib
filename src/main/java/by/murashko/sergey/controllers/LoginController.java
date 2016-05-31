@@ -42,7 +42,7 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String main(@ModelAttribute User user, HttpSession session, Locale locale) {
+	public String main(@ModelAttribute User user, HttpSession session, Locale locale ) {
 		logger.info(locale.getDisplayLanguage());
 		logger.info(messageSource.getMessage("locale", new String[] { locale.getDisplayName(locale) }, locale));
 		return "login";
@@ -53,13 +53,15 @@ public class LoginController {
 			ModelMap modelMap, RedirectAttributes redirectAttributes) {
 
 		if (!bindingResult.hasErrors()) {
-			redirectAttributes.addFlashAttribute("locale",
-					messageSource.getMessage("locale", new String[] { locale.getDisplayName(locale) }, locale));
+			redirectAttributes.addFlashAttribute("locale", messageSource.getMessage("locale", new String[] { locale.getDisplayName(locale) }, locale));
 			return "redirect:/mainpage";
 		}
-
-		return "login";
+		redirectAttributes.addFlashAttribute("bindingResult", bindingResult);
+		return "redirect:/login";
 	}
+	
+	
+	
 
 	@RequestMapping(value = "/mainpage", method = RequestMethod.GET)
 	public String goMainPage(HttpServletRequest request) {
@@ -73,6 +75,12 @@ public class LoginController {
 
 		return "main";
 	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(Locale locale, @Valid @ModelAttribute("user") User user, BindingResult bindingResult){
+		
+		return "login";
+		}
 
 	@RequestMapping(value = "/failed", method = RequestMethod.GET)
 	public ModelAndView failed() {
