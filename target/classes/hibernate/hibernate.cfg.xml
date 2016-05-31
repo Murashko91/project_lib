@@ -5,5 +5,7 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+         <property name="show_sql">true</property>  
+   <!--  <mapping resource="by/murashko/sergey/model/User.hbm.xml"/> -->
     </session-factory>
 </hibernate-configuration>
