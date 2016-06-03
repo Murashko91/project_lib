@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import by.murashko.sergey.beans.TestBean;
 import by.murashko.sergey.objects.User;
 
 @Controller
@@ -33,6 +35,8 @@ public class LoginController {
 
 	@Autowired
 	private MessageSource messageSource;
+	@Autowired
+	SessionFactory ssessionFactory;
 
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
@@ -45,6 +49,8 @@ public class LoginController {
 	public String main(@ModelAttribute User user, HttpSession session, Locale locale ) {
 		logger.info(locale.getDisplayLanguage());
 		logger.info(messageSource.getMessage("locale", new String[] { locale.getDisplayName(locale) }, locale));
+		logger.info("ssessionFactory is =="+ssessionFactory.toString());
+	
 		return "login";
 	}
 

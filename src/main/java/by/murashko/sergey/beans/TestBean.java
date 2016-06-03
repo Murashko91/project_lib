@@ -1,17 +1,17 @@
 package by.murashko.sergey.beans;
-
-//import org.hibernate.SessionFactory;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class TestBean {
 
-  /* // @Autowired
+    @Autowired
     private SessionFactory sessionFactory;
 
     public void test(){
-        System.out.println("sessionFactory = " + sessionFactory);
-    }*/
+    	
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!sessionFactory = " + sessionFactory);
+    }
 
 }
