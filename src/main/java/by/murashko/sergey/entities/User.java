@@ -1,4 +1,4 @@
-package by.murashko.sergey.objects;
+package by.murashko.sergey.entities;
 
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -15,7 +15,7 @@ public class User {
 		this.name = name;
 	}
 
-	@Size(min = 6, message = "{name.size.error}")
+	@Size(min = 5, message = "{name.size.error}")
 	// Имя должно быть больше 6 знаков
 	private String name;
 

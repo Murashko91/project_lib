@@ -66,33 +66,52 @@
         <beans:property name="password" value="javacop"/>
     </beans:bean>	
     
-    <beans:bean id="sessionFactory"   class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <beans:property name="dataSource" ref="dataSource" />
-	<!-- 	<beans:property name="configLocation" value="classpath:/hibernate/hibernate.cfg.xml" /> -->
-		<beans:property name="packagesToScan" value="by.murashko.sergey.objects"/>
-		   <beans:property name="hibernateProperties">
-		   <beans:props>
-		   <beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</beans:prop>
-		   <beans:prop key="show_sql">true</beans:prop>
-		   		   </beans:props>
-		   
-         </beans:property>
-		
-    </beans:bean>
-     
-    <tx:annotation-driven />
-    <beans:bean id="transactionManager"
-        class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <beans:property name="sessionFactory" ref="sessionFactory" />
-    </beans:bean>
+  <!-- Hibernate 4 SessionFactory Bean definition -->
+	<beans:bean id="hibernate4AnnotatedSessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="annotatedClasses">
+			<beans:list>
+				<beans:value>by.murashko.sergey.entities.Genre</beans:value>
+				<beans:value>by.murashko.sergey.entities.Book</beans:value>
+				<beans:value>by.murashko.sergey.entities.Publisher</beans:value>
+				<beans:value>by.murashko.sergey.entities.Author</beans:value>
+			</beans:list>
+		</beans:property>
+		<beans:property name="hibernateProperties">
+			<beans:props>
+				<beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect
+				</beans:prop>
+				<beans:prop key="hibernate.show_sql">true</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>
 	
-
+	 <beans:bean id="genreDao" class="by.murashko.sergey.dao.impl.GenreDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
 	
-
-
-
-
-
+	<!--  <beans:bean id="bookDao" class="by.murashko.sergey.dao.impl.BookDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean> 
+	 -->
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<beans:bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
 
 
 </beans:beans>
+	
+
+	
+
+
+
+
+
+
+
+
