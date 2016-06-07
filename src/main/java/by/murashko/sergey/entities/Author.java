@@ -29,6 +29,12 @@ public class Author implements java.io.Serializable {
 
 	public Author() {
 	}
+	
+	
+	public Author(String fio) {
+		this.fio = fio;
+		
+	}
 
 	public Author(String fio, Date birthday) {
 		this.fio = fio;

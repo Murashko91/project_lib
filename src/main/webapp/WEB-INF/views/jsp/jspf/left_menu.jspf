@@ -10,18 +10,18 @@
 	
 	<ul class="nav">
 
-		<li><a href="books.jsp?genre_id=0">Все книги</a></li>
+		<li><a href="books?genre_id=0">Все книги</a></li>
 		<c:forEach items="${genreList}" var="genre">
 
 			<c:if test="${param.genre_id != 0 && param.genre_id == genre.id}">
 
-				<li><a style="color: red;" href="books.jsp?genre_id=${genre.id}">${genre.name}</a></li>
+				<li><a style="color: red;" href="books?genre_id=${genre.id}">${genre.name}</a></li>
 			</c:if>
 
 			<c:if test="${param.genre_id=='0'|| param.genre_id != genre.id}">
 
 				<li><a style="color: blue;"
-					href="books.jsp?genre_id=${genre.id}">${genre.name}</a></li>
+					href="books?genre_id=${genre.id}">${genre.name}</a></li>
 			</c:if>
 
 		</c:forEach>

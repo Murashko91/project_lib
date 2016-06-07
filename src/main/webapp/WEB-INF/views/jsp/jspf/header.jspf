@@ -41,21 +41,23 @@
 
 			</div>
 			<div class="welcome">
-
+<span : right"> <a href="?lang=en">en</a> <a
+					href="?lang=ru">ru</a>
+				</span>
 				<h5>Добро пожаловать, ${user.name} !</h5>
 				<h6>
 					<a href="logout">Выход</a>
 				</h6>
 			</div>
 			<div class="search_form">
-				<form name="search_form" method="GET" action="/books">
+				<form name="search_form" method="GET" action="books">
 					<input type="text" name="search_string" value="поиск..."
 						size="110" /> 
 						<input class="search_button" type="submit"
 						value="Поиск" />
 						 <select name="search_option">
-						<option>Название</option>
-						<option>Автор</option>
+						<option><spring:message code="search_author"/></option>
+						<option><spring:message code="search_book"/></option>
 					</select>
 				</form>
 			</div>
