@@ -20,7 +20,7 @@
 
 
 	
-		<form:form method="POST" modelAttribute="user" action="check-user"
+		<form:form method="POST" modelAttribute="user" action="registration"
 			class="box login">
 
 
@@ -43,14 +43,18 @@
 				</form:label>
 				<form:password path="password" />
 				<form:errors path="password" cssClass="error" />
+				
+				<form:label path="mail">
+					<spring:message code="mail" />
+				</form:label>
+				<form:input path="mail" />
+				<form:errors path="mail" cssClass="error" />
+				
 
 			</fieldset>
 
-			<footer> <form:checkbox path="admin" /> <form:label
-				path="admin">
-				<spring:message code="admin" />
-			</form:label> <input type="submit" class="btnLogin"
-				value="<spring:message code="login"/>"> </footer>
+			<footer>  <input type="submit" class="btnLogin"
+				value="<spring:message code="regitration"/>"> </footer>
 
 
 		</form:form>

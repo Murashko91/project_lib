@@ -108,11 +108,19 @@ public class LibraryController {
 	}
 	
 	
-	@RequestMapping(value = "/imageController/{imageId}")
+	@RequestMapping(value = "/imageController/{bookId}")
 	@ResponseBody
-	public byte[] getImage(@PathVariable long imageId)  {
-		byte[] image = bookDao.getImage(imageId);
+	public byte[] getImage(@PathVariable long bookId)  {
+		byte[] image = bookDao.getImage(bookId);
 	  return image;
 	}
+	
+	@RequestMapping(value = "/contentController/{bookId}")
+	@ResponseBody
+	public byte[] getContent(@PathVariable long bookId)  {
+		byte[] content = bookDao.getContent(bookId);
+	  return content;
+	}
+	
 
 }

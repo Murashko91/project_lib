@@ -23,9 +23,9 @@ public class GenreDAOImpl implements GenreDAO{
 		@Autowired
 	private SessionFactory sessionFactory;
 	
-	public void setSessionFactory(SessionFactory sf){
+/*	public void setSessionFactory(SessionFactory sf){
 		this.sessionFactory = sf;
-	}
+	}*/
 
     @Override
     @Transactional

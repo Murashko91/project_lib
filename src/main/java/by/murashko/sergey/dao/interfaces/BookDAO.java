@@ -11,10 +11,12 @@ import java.util.List;
 public interface BookDAO {
 
     List<Book> getBooks();
-    byte[] getImage(Long id);
     List<Book> getBooks(Author author);
     List<Book> getBooks(String bookName);
     List<Book> getBooks(Genre genre);
     List<Book> getBooks(Character letter);
+    Book getBookById(Long id);
+    byte[] getImage(Long id);
+    public byte[] getContent(Long id);
 
 }

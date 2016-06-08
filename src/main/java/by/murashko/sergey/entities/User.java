@@ -23,6 +23,16 @@ public class User {
 	private String password;
 
 	private boolean admin;
+	@Size(min = 5, max = 20, message = "{e-mail.size.error}")
+	 private String mail;
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
 
 	public boolean isAdmin() {
 		return admin;

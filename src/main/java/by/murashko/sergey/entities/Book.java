@@ -1,6 +1,7 @@
 package by.murashko.sergey.entities;
-// Generated Jun 4, 2016 4:48:06 PM by Hibernate Tools 4.3.1.Final
+// Generated Jun 8, 2016 2:07:14 PM by Hibernate Tools 4.3.1.Final
 
+import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +31,7 @@ public class Book implements java.io.Serializable {
 	private int publishYear;
 	private byte[] image;
 	private String descr;
-	private Integer rating;
+	private BigDecimal rating;
 	private Long voteCount;
 
 	public Book() {
@@ -49,7 +50,7 @@ public class Book implements java.io.Serializable {
 	}
 
 	public Book(Author author, Genre genre, Publisher publisher, String name, byte[] content, int pageCount,
-			String isbn, int publishYear, byte[] image, String descr, Integer rating, Long voteCount) {
+			String isbn, int publishYear, byte[] image, String descr, BigDecimal rating, Long voteCount) {
 		this.author = author;
 		this.genre = genre;
 		this.publisher = publisher;
@@ -169,12 +170,12 @@ public class Book implements java.io.Serializable {
 		this.descr = descr;
 	}
 
-	@Column(name = "rating")
-	public Integer getRating() {
+	@Column(name = "rating", precision = 2, scale = 1)
+	public BigDecimal getRating() {
 		return this.rating;
 	}
 
-	public void setRating(Integer rating) {
+	public void setRating(BigDecimal rating) {
 		this.rating = rating;
 	}
 

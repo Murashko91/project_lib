@@ -47,15 +47,7 @@ public class BookDAOImpl implements BookDAO {
 	 * createBookList(createBookCriteria().add(Restrictions.eq("b.id", id)));
 	 * byte[] image = books.get(0).getImage(); return image; }
 	 */
-	@Transactional
-	@Override
-	public byte[] getImage(Long id) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
-		criteria.add(Restrictions.eq("id", id));
-		Book book = (Book) criteria.uniqueResult();
-		byte[] image = book.getImage();
-		return image;
-	}
+	
 
 	@Transactional
 	@Override
@@ -117,5 +109,48 @@ public class BookDAOImpl implements BookDAO {
 				.setResultTransformer(Transformers.aliasToBean(Book.class));
 		return criteria.list();
 	}
+	
+	@Transactional
+	@Override
+	public Book  getBookById(Long id){
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
+		criteria.add(Restrictions.eq("id", id));
+		Book book = (Book) criteria.uniqueResult();
+		return book;
+	}
+	
+	/*//загружается ли контент Book book в оператику при выполнении метода getBookById(id)???
+	 /// Если загружается то использовать данный метод нельзя т.к. при каждой подгрузке картинок буде подгружаться и контент!!
+	@Transactional
+	@Override
+	public byte[] getImage(Long id) {
+		
+		byte[] image = getBookById(id).getImage();
+		return image;
+	}
+	
+	*/
+	
+	
+	@Transactional
+	@Override
+	public byte[] getImage(Long id) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
+		criteria.add(Restrictions.eq("id", id));
+		Book book = (Book) criteria.setProjection(bookProjection).uniqueResult();
+		byte[] image = book.getImage();
+		return image;
+	}
+	
+	
+	
+	@Transactional
+	@Override
+	public byte[] getContent(Long id) {
+		byte[] content = getBookById(id).getContent();
+		return content;
+	}
+	
+	
 
 }

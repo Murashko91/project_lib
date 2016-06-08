@@ -76,6 +76,7 @@
 				<beans:value>by.murashko.sergey.entities.Book</beans:value>
 				<beans:value>by.murashko.sergey.entities.Publisher</beans:value>
 				<beans:value>by.murashko.sergey.entities.Author</beans:value>
+				<beans:value>by.murashko.sergey.entities.Users</beans:value>
 			</beans:list>
 		</beans:property>
 		<beans:property name="hibernateProperties">
@@ -87,9 +88,9 @@
 		</beans:property>
 	</beans:bean>
 	
-	 <beans:bean id="genreDao" class="by.murashko.sergey.dao.impl.GenreDAOImpl">
+	 <!-- <beans:bean id="genreDao" class="by.murashko.sergey.dao.impl.GenreDAOImpl">
 		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-	</beans:bean>
+	</beans:bean> -->
 	
 	<!--  <beans:bean id="bookDao" class="by.murashko.sergey.dao.impl.BookDAOImpl">
 		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
