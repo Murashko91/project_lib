@@ -7,6 +7,8 @@ import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+
 import by.murashko.sergey.dao.interfaces.BookDAO;
 import by.murashko.sergey.entities.Author;
 import by.murashko.sergey.entities.Book;
@@ -28,7 +30,6 @@ public class BookDAOImpl implements BookDAO {
 		bookProjection = Projections.projectionList();
 		bookProjection.add(Projections.property("id"), "id");
 		bookProjection.add(Projections.property("name"), "name");
-		bookProjection.add(Projections.property("image"), "image");
 		bookProjection.add(Projections.property("genre"), "genre");
 		bookProjection.add(Projections.property("pageCount"), "pageCount");
 		bookProjection.add(Projections.property("isbn"), "isbn");
@@ -110,14 +111,26 @@ public class BookDAOImpl implements BookDAO {
 		return criteria.list();
 	}
 	
-	@Transactional
+/*	@Transactional
 	@Override
 	public Book  getBookById(Long id){
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
 		criteria.add(Restrictions.eq("id", id));
-		Book book = (Book) criteria.uniqueResult();
-		return book;
+		return (Book)criteria.uniqueResult();
+	}*/
+	
+	
+	@Transactional
+	@Override
+	public Book  getBookById(Long id){
+	
+		return (Book)sessionFactory.getCurrentSession().load(Book.class, id);
 	}
+	
+	
+
+	
+	
 	
 	/*//загружается ли контент Book book в оператику при выполнении метода getBookById(id)???
 	 /// Если загружается то использовать данный метод нельзя т.к. при каждой подгрузке картинок буде подгружаться и контент!!
@@ -135,10 +148,8 @@ public class BookDAOImpl implements BookDAO {
 	@Transactional
 	@Override
 	public byte[] getImage(Long id) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
-		criteria.add(Restrictions.eq("id", id));
-		Book book = (Book) criteria.setProjection(bookProjection).uniqueResult();
-		byte[] image = book.getImage();
+			
+		byte[] image = getBookById(id).getImage();
 		return image;
 	}
 	

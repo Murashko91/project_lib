@@ -17,7 +17,7 @@
 </head>
 
 <body>
-
+${addUser}
 
 	
 		<form:form method="POST" modelAttribute="user" action="registration"

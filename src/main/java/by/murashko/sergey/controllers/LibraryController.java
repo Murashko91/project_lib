@@ -35,7 +35,7 @@ import by.murashko.sergey.dao.interfaces.*;
 import by.murashko.sergey.entities.*;
 
 @Controller
-@SessionAttributes("genreList")
+@SessionAttributes({"genreList","user"})
 
 public class LibraryController {
 
@@ -51,10 +51,10 @@ public class LibraryController {
 
 	private static final Logger logger = LoggerFactory.getLogger(LibraryController.class);
 
-	@ModelAttribute
+	/*@ModelAttribute
 	public User createNewUser() {
 		return new User("Guest");
-	}
+	}*/
 
 	@ModelAttribute("genreList")
 	public List<Genre> createNewGenreList() {

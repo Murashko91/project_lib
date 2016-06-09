@@ -18,9 +18,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mysql.jdbc.exceptions.*;
+
 import by.murashko.sergey.dao.interfaces.UserDAO;
 import by.murashko.sergey.entities.*;
-
 
 @Controller
 @SessionAttributes("user")
@@ -37,14 +38,20 @@ public class LoginController {
 
 	@ModelAttribute
 	public User createNewUser() {
-		return new User("Guest");
+		return new User("User");
+	}
+
+	private void addAuthentication(HttpSession session) {
+		session.setAttribute("go", "true");
+	}
+
+	private void removeAuthentication(HttpSession session) {
+		session.removeAttribute("go");
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main(@ModelAttribute User user, HttpSession session, Locale locale, ModelMap model) {
 		logger.info(locale.getDisplayLanguage());
-		
-		
 
 		logger.info(messageSource.getMessage("locale", new String[] { locale.getDisplayName(locale) }, locale));
 
@@ -53,10 +60,18 @@ public class LoginController {
 
 	@RequestMapping(value = "/check-user", method = RequestMethod.POST)
 	public String checkUser(Locale locale, @Valid @ModelAttribute("user") User user, BindingResult bindingResult,
-			ModelMap modelMap, RedirectAttributes redirectAttributes) {
-	
+			ModelMap modelMap, RedirectAttributes redirectAttributes, HttpSession session) {
+		if (user.isGuest() == true) {
+			/* modelMap.addAttribute("user", new User("AnonimGuest")); */
+			// не работает. после редиректо остается только user
+
+			session.setAttribute("user", new User("AnonimGuest"));
+			addAuthentication(session);
+			return "redirect:/main";
+		}
 		if (!bindingResult.hasErrors()) {
 			if (userDao.acceptUser(user)) {
+				addAuthentication(session);
 				return "redirect:/main";
 			} else
 				return "redirect:regpage";
@@ -66,18 +81,26 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public String registration( @Valid @ModelAttribute("user") User user, BindingResult bindingResult,
-			ModelMap modelMap, RedirectAttributes redirectAttributes) {
-		
-		if (!bindingResult.hasErrors()) {
-			// redirectAttributes.addFlashAttribute("locale",
-			// messageSource.getMessage("locale", new String[] {
-			// locale.getDisplayName(locale) }, locale));
-			userDao.addUser(user);
-			
-		}
+	public String registration(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, ModelMap modelMap,
+			RedirectAttributes redirectAttributes, Locale locale) {
 
-		return "redirect:/login";
+		if (!bindingResult.hasErrors()) {
+
+			try {
+				userDao.addUser(user);
+
+			} catch (Exception e) {
+
+				redirectAttributes.addFlashAttribute("addUser",
+						messageSource.getMessage("addusererror", new String[] {}, locale));
+				return "redirect:/regpage";
+
+			}
+			return "redirect:/login";
+		} else {
+
+			return "redirect:/regpage";
+		}
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -85,24 +108,17 @@ public class LoginController {
 
 		return "login";
 	}
-	
+
 	@RequestMapping(value = "/regpage", method = RequestMethod.GET)
 	public String regpage(Locale locale, @Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
 
 		return "regpage";
 	}
-	
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String login(Locale locale, HttpSession session, ModelMap model) {
-		session.removeAttribute("user");
-		model.addAttribute("user", new User("Guest"));
+		removeAuthentication(session);
 		return "redirect:/login";
-	}
-
-	@RequestMapping(value = "/failed", method = RequestMethod.GET)
-	public ModelAndView failed() {
-		return new ModelAndView("failed", "message", "FFFFfailed!");
 	}
 
 }

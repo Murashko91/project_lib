@@ -15,16 +15,26 @@ public class User {
 		this.name = name;
 	}
 
-	@Size(min = 5, message = "{name.size.error}")
-	// Имя должно быть больше 6 знаков
+	@Size(min = 4, message = "{name.size.error}")
+	// Имя должно быть больше 5 знаков
 	private String name;
 
 	@Size(min = 5, max = 10, message = "{password.size.error}")
 	private String password;
 
 	private boolean admin;
-	@Size(min = 5, max = 20, message = "{e-mail.size.error}")
-	 private String mail;
+	private boolean guest;
+
+	public boolean isGuest() {
+		return guest;
+	}
+
+	public void setGuest(boolean guest) {
+		this.guest = guest;
+	}
+
+	@Size(min = 5, max = 20, message = "{mail.size.error}")
+	private String mail;
 
 	public String getMail() {
 		return mail;

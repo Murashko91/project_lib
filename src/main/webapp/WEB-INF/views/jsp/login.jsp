@@ -19,40 +19,50 @@
 <body>
 
 
-	
-		<form:form method="POST" modelAttribute="user" action="check-user"
-			class="box login">
+
+	<form:form method="POST" modelAttribute="user" action="check-user"
+		class="box login">
 
 
-			<fieldset class="boxBody">
+		<fieldset class="boxBody">
 
-				<span style="float: right"> <a href="?lang=en">en</a> <a
-					href="?lang=ru">ru</a>
-				</span>
+			<span style="float: right"> <a href="?lang=en">en</a> <a
+				href="?lang=ru">ru</a>
+			</span>
 
 
 
-				<form:label path="name">
-					<spring:message code="username" />
-				</form:label>
-				<form:input path="name" />
-				<form:errors path="name" cssClass="error" />
+			<form:label path="name">
+				<spring:message code="username" />
+			</form:label>
+			<form:input path="name" />
+			<form:errors path="name" cssClass="error" />
 
-				<form:label path="password">
-					<spring:message code="password" />
-				</form:label>
-				<form:password path="password" />
-				<form:errors path="password" cssClass="error" />
+			<form:label path="password">
+				<spring:message code="password" />
+			</form:label>
+			<form:password path="password" />
+			<form:errors path="password" cssClass="error" />
 
-			</fieldset>
+		</fieldset>
 
-			<footer> <form:checkbox path="admin" /> <form:label
-				path="admin">
+		<footer>
+		<div>
+			<form:checkbox path="admin" />
+			<form:label path="admin">
 				<spring:message code="admin" />
-			</form:label> <input type="submit" class="btnLogin"
-				value="<spring:message code="login"/>"> </footer>
+			</form:label>
+		</div>
+		<div>
+			<form:checkbox path="guest" />
+			<form:label path="guest">
+				<spring:message code="guest" />
+			</form:label>
+		</div>
+		<input type="submit" class="btnLogin"
+			value="<spring:message code="login"/>"> </footer>
 
 
-		</form:form>
+	</form:form>
 </body>
 </html>
