@@ -18,5 +18,8 @@ public interface BookDAO {
     Book getBookById(Long id);
     byte[] getImage(Long id);
     public byte[] getContent(Long id);
+    public void addBook(Book book);
+    public void removeBook(int id);
+ 
 
 }

@@ -6,7 +6,7 @@
 <%@page import="by.murashko.sergey.objects.*"%>
 <html>
 <head>
-<link href="<c:url value="/resources/css/style_main.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/bootstrap.css" />" rel="stylesheet">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Онлайн библиотека</title>
 

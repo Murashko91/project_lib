@@ -18,7 +18,7 @@
 				<li><a style="color: red;" href="books?genre_id=${genre.id}">${genre.name}</a></li>
 			</c:if>
 
-			<c:if test="${param.genre_id=='0'|| param.genre_id != genre.id}">
+			<c:if test="${param.genre_id==0|| param.genre_id != genre.id}">
 
 				<li><a style="color: blue;"
 					href="books?genre_id=${genre.id}">${genre.name}</a></li>

@@ -4,11 +4,13 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import by.murashko.sergey.dao.interfaces.GenreDAO;
+import by.murashko.sergey.entities.Author;
 import by.murashko.sergey.entities.Genre;
 
 import java.util.ArrayList;
@@ -31,8 +33,15 @@ public class GenreDAOImpl implements GenreDAO{
     @Transactional
     public List<Genre> getGenres() {
     	  System.out.println("!!!!!!!!!!!getsession"+sessionFactory.getCurrentSession().toString());
-       return sessionFactory.getCurrentSession().createCriteria(Genre.class).list();
+       return sessionFactory.getCurrentSession().createCriteria(Genre.class).list();}
      
+      
+    @Override
+    @Transactional
+    public Genre getGenreByName(String name){
+    	   
+    	   return (Genre)sessionFactory.getCurrentSession().createCriteria(Genre.class).add(Restrictions.eq("name", name)).uniqueResult();
+       
        
     }
 

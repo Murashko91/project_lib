@@ -4,12 +4,14 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import by.murashko.sergey.dao.interfaces.AuthorDAO;
 import by.murashko.sergey.entities.Author;
+import by.murashko.sergey.entities.Users;
 import scala.annotation.meta.getter;
 
 import java.util.ArrayList;
@@ -34,6 +36,13 @@ public class AuthorDAOImpl implements AuthorDAO {
 
 		return sessionFactory.getCurrentSession().createCriteria(Author.class).list();
 
+	}
+
+	@Override
+	@Transactional
+	public Author getAuthorByName(String name) {
+		return (Author) sessionFactory.getCurrentSession().createCriteria(Author.class)
+				.add(Restrictions.eq("fio", name)).uniqueResult();
 	}
 
 }

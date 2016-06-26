@@ -64,5 +64,10 @@ public class Publisher implements java.io.Serializable {
 	public void setBooks(Set<Book> books) {
 		this.books = books;
 	}
+	@Override
+	public String toString(){
+		return name;
+		
+	}
 
 }

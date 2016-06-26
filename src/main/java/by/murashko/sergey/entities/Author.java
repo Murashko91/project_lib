@@ -85,5 +85,11 @@ public class Author implements java.io.Serializable {
 	public void setBooks(Set<Book> books) {
 		this.books = books;
 	}
+	
+	@Override
+	public String toString(){
+		return fio;
+		
+	}
 
 }

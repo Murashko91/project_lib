@@ -10,5 +10,6 @@ import java.util.List;
 public interface AuthorDAO {
 
 	  List<Author> getAuthors();
+	  public Author getAuthorByName(String name);
 
 }

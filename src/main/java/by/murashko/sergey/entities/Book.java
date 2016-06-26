@@ -2,6 +2,8 @@ package by.murashko.sergey.entities;
 // Generated Jun 8, 2016 2:07:14 PM by Hibernate Tools 4.3.1.Final
 
 import java.math.BigDecimal;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -66,7 +68,7 @@ public class Book implements java.io.Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
+	@GeneratedValue(strategy = IDENTITY )
 
 	@Column(name = "id", unique = true, nullable = false)
 	public Long getId() {
@@ -77,7 +79,7 @@ public class Book implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY/*, cascade = {CascadeType.ALL}*/)
 	@JoinColumn(name = "author_id", nullable = false)
 	public Author getAuthor() {
 		return this.author;
@@ -87,7 +89,7 @@ public class Book implements java.io.Serializable {
 		this.author = author;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY/*, cascade = {CascadeType.ALL}*/)
 	@JoinColumn(name = "genre_id", nullable = false)
 	public Genre getGenre() {
 		return this.genre;
@@ -97,7 +99,7 @@ public class Book implements java.io.Serializable {
 		this.genre = genre;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY/*, cascade = {CascadeType.ALL}*/)
 	@JoinColumn(name = "publisher_id", nullable = false)
 	public Publisher getPublisher() {
 		return this.publisher;
@@ -133,6 +135,11 @@ public class Book implements java.io.Serializable {
 	public void setPageCount(int pageCount) {
 		this.pageCount = pageCount;
 	}
+	
+	/*public void setPageCount(String pageCount) {
+		this.pageCount = Integer.parseInt(pageCount);
+	}*/
+	
 
 	@Column(name = "isbn", unique = true, nullable = false, length = 100)
 	public String getIsbn() {
@@ -151,6 +158,8 @@ public class Book implements java.io.Serializable {
 	public void setPublishYear(int publishYear) {
 		this.publishYear = publishYear;
 	}
+	
+	
 
 	@Column(name = "image")
 	public byte[] getImage() {
@@ -186,6 +195,11 @@ public class Book implements java.io.Serializable {
 
 	public void setVoteCount(Long voteCount) {
 		this.voteCount = voteCount;
+	}
+	@Override
+	public String toString(){
+		return name;
+		
 	}
 
 }

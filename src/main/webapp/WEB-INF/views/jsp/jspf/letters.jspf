@@ -8,10 +8,10 @@
 		String searchLetter = null;
 		if (request.getParameter("letter") != null) {
 			searchLetter = request.getParameter("letter");
-			session.setAttribute("letter", searchLetter);
-		} else if (session.getAttribute("letter") != null) {
+			//session.setAttribute("letter", searchLetter);
+		} /* else if (session.getAttribute("letter") != null) {
 			searchLetter = session.getAttribute("letter").toString();
-		}
+		} */
 		char[] letters = letterList.getRusLetters();
 		for (int i = 0; i < letters.length; i++) {
 			if (searchLetter != null && searchLetter.toString().toUpperCase().charAt(0) == letters[i]) {

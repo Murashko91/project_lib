@@ -37,7 +37,7 @@ public class LetterList {
         letters[30]='Э';
         letters[31]='Ю';
         letters[32]='Я';
-                
+             
         
         return letters;
     }

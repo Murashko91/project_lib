@@ -45,16 +45,18 @@ public class LibraryController {
 	private List<Book> bookList;
 	@Autowired
 	private GenreDAO genreDao;
+	@Autowired
+	private AuthorDAO authorDao;
 
 	@Autowired
 	private BookDAO bookDao;
 
 	private static final Logger logger = LoggerFactory.getLogger(LibraryController.class);
 
-	/*@ModelAttribute
-	public User createNewUser() {
-		return new User("Guest");
-	}*/
+	@ModelAttribute
+	public Book createNewBook() {
+		return new Book();
+	}
 
 	@ModelAttribute("genreList")
 	public List<Genre> createNewGenreList() {
@@ -76,7 +78,7 @@ public class LibraryController {
 		logger.info("go books-page on library");
 
 		// Search by Genre
-		if (request.getParameter("genre_id") != null) {
+		if (request.getParameter("genre_id") != null && request.getParameter("genre_id")!="0"){
 			long genreId = Long.valueOf(request.getParameter("genre_id"));
 
 			for (Genre genre : genreList) {
@@ -121,6 +123,9 @@ public class LibraryController {
 		byte[] content = bookDao.getContent(bookId);
 	  return content;
 	}
+	
+	
+	
 	
 
 }

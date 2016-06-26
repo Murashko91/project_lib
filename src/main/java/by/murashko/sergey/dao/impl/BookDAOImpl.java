@@ -1,6 +1,8 @@
 package by.murashko.sergey.dao.impl;
 
 import org.hibernate.Criteria;
+import org.hibernate.LockMode;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.*;
 import org.hibernate.transform.Transformers;
@@ -13,6 +15,8 @@ import by.murashko.sergey.dao.interfaces.BookDAO;
 import by.murashko.sergey.entities.Author;
 import by.murashko.sergey.entities.Book;
 import by.murashko.sergey.entities.Genre;
+import by.murashko.sergey.entities.User;
+import by.murashko.sergey.entities.Users;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -126,23 +130,11 @@ public class BookDAOImpl implements BookDAO {
 	
 		return (Book)sessionFactory.getCurrentSession().load(Book.class, id);
 	}
-	
-	
+
 
 	
 	
 	
-	/*//загружается ли контент Book book в оператику при выполнении метода getBookById(id)???
-	 /// Если загружается то использовать данный метод нельзя т.к. при каждой подгрузке картинок буде подгружаться и контент!!
-	@Transactional
-	@Override
-	public byte[] getImage(Long id) {
-		
-		byte[] image = getBookById(id).getImage();
-		return image;
-	}
-	
-	*/
 	
 	
 	@Transactional
@@ -161,6 +153,25 @@ public class BookDAOImpl implements BookDAO {
 		byte[] content = getBookById(id).getContent();
 		return content;
 	}
+	@Transactional
+	@Override
+	public void addBook(Book book){
+		Session session = this.sessionFactory.getCurrentSession();
+
+		
+		session.save(book);
+	}
+	
+	@Override
+	@Transactional
+	public void removeBook(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Book book = (Book) session.load(Book.class, new Long(id));
+		if (null != book) {
+			session.delete(book);
+		}
+	}
+
 	
 	
 

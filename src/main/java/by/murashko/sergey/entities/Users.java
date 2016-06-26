@@ -67,5 +67,10 @@ public class Users implements java.io.Serializable {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
+	@Override
+	public String toString(){
+		return name;
+		
+	}
 
 }
