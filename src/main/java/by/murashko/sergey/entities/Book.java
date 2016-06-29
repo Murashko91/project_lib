@@ -79,7 +79,7 @@ public class Book implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY/*, cascade = {CascadeType.ALL}*/)
+	@ManyToOne(fetch = FetchType.EAGER/*, cascade = {CascadeType.ALL}*/)
 	@JoinColumn(name = "author_id", nullable = false)
 	public Author getAuthor() {
 		return this.author;
@@ -89,7 +89,7 @@ public class Book implements java.io.Serializable {
 		this.author = author;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY/*, cascade = {CascadeType.ALL}*/)
+	@ManyToOne(fetch = FetchType.EAGER/*, cascade = {CascadeType.ALL}*/)
 	@JoinColumn(name = "genre_id", nullable = false)
 	public Genre getGenre() {
 		return this.genre;
@@ -99,7 +99,7 @@ public class Book implements java.io.Serializable {
 		this.genre = genre;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY/*, cascade = {CascadeType.ALL}*/)
+	@ManyToOne(fetch = FetchType.EAGER/*, cascade = {CascadeType.ALL}*/)
 	@JoinColumn(name = "publisher_id", nullable = false)
 	public Publisher getPublisher() {
 		return this.publisher;

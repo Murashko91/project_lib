@@ -1,0 +1,98 @@
+<%@ page pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@page import="by.murashko.sergey.objects.*"%>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="<c:url value="/resources/css/bootstrap.css" />"
+	rel="stylesheet">
+<script src="https://code.jquery.com/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<title>Онлайн библиотека</title>
+</head>
+<body>
+	<%-- 	<%
+		request.setCharacterEncoding("UTF-8");
+	%> --%>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10">
+				<h1>Админка онлайн библиотеки</h1>
+			</div>
+			<div class="col-md-2">
+				<div>
+					<span> <a href="?lang=en">en</a> <a href="?lang=ru">ru</a></span>
+				</div>
+				<div>
+					<h5>Добро пожаловать, ${user.name} !</h5>
+					<h6>
+						<a href="logout">Выход</a>
+					</h6>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+
+			
+			<div class="col-md-12">
+
+				<ul class="nav nav-pills">
+					<li class="dropdown pull-left">
+						<button class="btn btn-default  btn-lg dropdown-toggle"
+							type="button" data-toggle="dropdown">Добавить</button>
+						<ul class="dropdown-menu">
+							<li><a href="?add_book=notnull">Книга</a></li>
+							<li><a href="?add_author=notnull">Автор</a></li>
+							<li><a href="?add_genre=notnull"">Жанр</a></li>
+							<li><a href="?add_publisher=notnull"">Издание</a></li>
+						
+						</ul>
+					</li>
+
+
+<li class="dropdown pull-left">
+						<button class="btn btn-default  btn-lg dropdown-toggle"
+							type="button" data-toggle="dropdown">Удалить</button>
+						<ul class="dropdown-menu">
+							<li><a href="?remove_book=notnull">Книга</a></li>
+							<li><a href="?remove_author=notnull">Автор</a></li>
+							<li><a href="?remove_genre=notnull"">Жанр</a></li>
+							<li><a href="?remove_publisher=notnull"">Издание</a></li>
+							<li><a href="?remove_user=notnull">Пользователь</a></li>
+						</ul>
+					</li>
+
+
+
+					<li class="dropdown pull-left">
+						<button class="btn btn-default  btn-lg dropdown-toggle"
+							type="button" data-toggle="dropdown">Редактировать</button>
+						<ul class="dropdown-menu">
+							<li class="disabled"><a href="№">Книга</a></li>
+							<li class="disabled"><a href="#">Автор</a></li>
+							<li class="disabled"><a href="#">Жанр</a></li>
+							<li class="disabled"><a href="#">Издание</a></li>
+							<li class="disabled"> <a href="#">Пользователь</a></li>
+						</ul>
+					</li>
+					<li class="dropdown pull-left">
+						<button class="btn btn-default  btn-lg dropdown-toggle"
+							type="button" data-toggle="dropdown">Служебная информация</button>
+						<ul class="dropdown-menu">
+							<li class="disabled"><a href="#">Почта администратора</a></li>
+							<li class="disabled"><a href="#">Статистика посещений</a></li>
+							<li class="disabled"><a href="#">..др</a></li>
+						</ul>
+					</li>
+
+				</ul>
+				
+			</div>
+
+		</div>
+		

@@ -1,6 +1,7 @@
 package by.murashko.sergey.dao.impl;
 
 import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import by.murashko.sergey.dao.interfaces.GenreDAO;
 import by.murashko.sergey.entities.Author;
+import by.murashko.sergey.entities.Book;
 import by.murashko.sergey.entities.Genre;
 
 import java.util.ArrayList;
@@ -43,6 +45,23 @@ public class GenreDAOImpl implements GenreDAO{
     	   return (Genre)sessionFactory.getCurrentSession().createCriteria(Genre.class).add(Restrictions.eq("name", name)).uniqueResult();
        
        
+    }
+    @Override
+    @Transactional
+    public void addGenre(Genre genre){
+    	Session session = this.sessionFactory.getCurrentSession();
+		session.save(genre);
+    };
+    @Override
+    @Transactional
+    public void removeGenre(int id){
+    	Session session = this.sessionFactory.getCurrentSession();
+		Genre genre = (Genre) session.load(Genre.class, new Long(id));
+		if (null != genre) {
+			session.delete(genre);
+		}else throw new NullPointerException(" WARN! genre = NULL in session.delete(genre);");
+    	
+    	
     }
 
 

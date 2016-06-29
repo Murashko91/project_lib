@@ -56,7 +56,7 @@ public class Genre implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "genre")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "genre")
 	public Set<Book> getBooks() {
 		return this.books;
 	}

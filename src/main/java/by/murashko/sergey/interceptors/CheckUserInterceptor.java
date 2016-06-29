@@ -13,11 +13,16 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter { // impleme
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,  ModelAndView modelAndView) throws Exception {
+		
+	
+		
+		
+		
 		if ((request.getSession().getAttribute("go")==null)
 				&&(request.getRequestURI().contains("main")||request.getRequestURI().contains("books"))) {
-		
-					
-			response.sendRedirect(request.getContextPath() );
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+							response.sendRedirect(request.getContextPath() );
 			
 		}
 	}

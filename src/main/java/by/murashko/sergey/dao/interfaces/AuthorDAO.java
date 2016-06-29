@@ -11,5 +11,5 @@ public interface AuthorDAO {
 
 	  List<Author> getAuthors();
 	  public Author getAuthorByName(String name);
-
+	  public void addAuthor(Author author);
 }

@@ -1,0 +1,50 @@
+<%@ page pageEncoding="UTF-8"%>
+<%@page import="java.util.ArrayList"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
+
+
+<div class="row">
+	<div class="col-md-12">
+
+
+
+		<div class="row">
+			<div class="col-md-10">
+				<hr class="style14" style="margin: 0px;">
+
+				<form:form method="POST" modelAttribute="genre" action="addgenre"
+					role="form" class="form-group">
+					<small class="bg-success small" align="left">${adminInfoPreAction_OK}</small>
+					<small class="bg-danger small" align="left">${adminInfoPreAction_FALL}</small>
+
+
+					<table class="table table-hover">
+						<tr>
+							<td><form:label path="name">
+			  Название жанра
+			</form:label></td>
+							<td><form:input path="name" class="form-control" /></td>
+						</tr>
+
+						<tr>
+							<td colspan="2" style="text-align: right;: red"><input
+								type="text" id="errorPage" name="errorPage"
+								style="display: none;"> <input type="submit"
+								class="btn btn-success" value="Добавить"></td>
+						</tr>
+
+					</table>
+
+				</form:form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+

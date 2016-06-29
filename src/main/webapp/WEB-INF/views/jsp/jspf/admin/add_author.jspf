@@ -1,0 +1,78 @@
+<%@ page pageEncoding="UTF-8"%>
+<%@page import="java.util.ArrayList"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
+
+
+<div class="row">
+	<div class="col-md-12">
+
+
+
+		<div class="row">
+			<div class="col-md-10">
+				<hr class="style14" style="margin: 0px;">
+
+				<form:form method="POST" modelAttribute="author" action="addauthor"
+					role="form" class="form-group" enctype="multipart/form-data">
+					<small class="bg-success small" align="left">${adminInfoPreAction_OK}</small>
+					<small class="bg-danger small" align="left">${adminInfoPreAction_FALL}</small>
+
+
+					<table class="table table-hover">
+						<tr>
+							<td><form:label path="fio">
+			ФИО(псевданим)автора
+			</form:label></td>
+							<td><form:input path="fio" class="form-control" /></td>
+						</tr>
+						<tr>
+							<td><form:label path="birthday">
+			День рождения автора ГГГГ/ММ/ДД
+			</form:label></td>
+			<td><form:input path="birthday" class="form-control datt"	
+					
+								 value="пример: 1900/01/01"
+								onchange="
+								var dStr = $('.datt').val();
+								var isDate=(dStr.search(/[0-2]\d{3}\/((0\d)|(1[0-2]))\/\d{2}/));
+							
+								if(isDate>-1){varDate = dStr.substring(isDate, isDate+10);$('#errorPage').val('0');
+					
+					$('.datt').val(varDate);
+					}else{ $('#errorPage').val('error in form pdf'); 	alert('Неверный формат даты');}
+					"  /> 
+					
+					
+					</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="text-align: right;: red"><input
+								type="text" id="errorPage" name="errorPage"
+								style="display: none;"> <input type="submit"
+								class="btn btn-success" value="Добавить"
+								onclick="
+									if($('#errorPage').val()!=0){$('.datt').val('1991/12/08');
+									$('.datt').val('1991/12/08')};
+									//alert($('.datt').val());
+									
+
+
+									
+									"></td>
+						</tr>
+
+					</table>
+
+				</form:form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+

@@ -2,9 +2,11 @@ package by.murashko.sergey.controllers;
 
 import java.awt.Image;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,17 +41,13 @@ import by.murashko.sergey.dao.interfaces.*;
 import by.murashko.sergey.entities.*;
 
 @Controller
-@SessionAttributes({ "genreList", "bookList", "publisherList", "usersList" })
+@SessionAttributes({ "genreList", "publisherList", "usersList" })
 
 public class AdminController {
 
 	@Autowired
 	private MessageSource messageSource;
 
-	/*
-	 * private List<Book> bookList; private List<Author> authorList; private
-	 * List<Publisher> publisherList; private List<User> usersList;
-	 */
 
 	@Autowired
 	private GenreDAO genreDao;
@@ -61,17 +59,26 @@ public class AdminController {
 	@Autowired
 	private PublisherDAO publisherDao;
 
-	private static final Logger logger = LoggerFactory.getLogger(LibraryController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
 	@ModelAttribute
 	public Book createNewBook() {
 		return new Book();
 	}
 
-	@ModelAttribute("genreList")
-	public List<Genre> createNewGenreList() {
+	@ModelAttribute
+	public Author createNewAuthor() {
+		return new Author();
+	}
 
-		return genreDao.getGenres();
+	@ModelAttribute
+	public Genre createNewGenre() {
+		return new Genre();
+	}
+
+	@ModelAttribute
+	public Publisher createNewPublisher() {
+		return new Publisher();
 	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -79,20 +86,114 @@ public class AdminController {
 			ModelMap modelMap) {
 		modelMap.addAttribute("authorList", authorDao.getAuthors());
 		modelMap.addAttribute("publisherList", publisherDao.getPublishers());
+		modelMap.addAttribute("genreList", genreDao.getGenres());
+		modelMap.addAttribute("bookList", bookDao.getBooks());
+
 		return "admin";
 	}
 
 	@RequestMapping(value = "/addbook", method = RequestMethod.POST)
-	public String addbook(@ModelAttribute Book book, @RequestParam("contentFile") MultipartFile contentFile,@RequestParam("genre") String genre,@RequestParam("author") String author, @RequestParam("publisher") String publisher, @RequestParam("imageFile") MultipartFile imageFile, HttpServletRequest request,
-			HttpServletResponse response, HttpSession session, ModelMap modelMap) throws IOException {
-	book.setContent(contentFile.getBytes());
-	book.setImage(imageFile.getBytes());
-	book.setAuthor(authorDao.getAuthorByName(author));
-	book.setPublisher(publisherDao.getPublisherByName(publisher));
-	book.setGenre(genreDao.getGenreByName(genre));
-	logger.info("!!!!!!!!!!!!!!SSSS!!!!!!!!!!!!!!!!!!"+book+" "+book.getPublishYear()+book.getPageCount()+""+book.getIsbn()); 
-	bookDao.addBook(book);
-			return "redirect:/admin";
+	public String addbook(@ModelAttribute Book book, @RequestParam("contentFile") MultipartFile contentFile,
+			@RequestParam("genre") String genre, @RequestParam("author") String author,
+			@RequestParam("publisher") String publisher, @RequestParam("imageFile") MultipartFile imageFile,
+			HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) throws IOException {
+		String s = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+		for(int i = 0;i<5; i++){s += s; }
+		logger.info(s);
+		System.out.println("SSSS"+s);
+		System.out.println("2222"+s);
+		try {
+			book.setContent(contentFile.getBytes());
+			book.setImage(imageFile.getBytes());
+			book.setAuthor(authorDao.getAuthorByName(author));
+			book.setPublisher(publisherDao.getPublisherByName(publisher));
+			book.setGenre(genreDao.getGenreByName(genre));
+			if (request.getParameter("errorPage") != null) {
+				throw new Exception("Error in form add book");
+			}
+			bookDao.addBook(book);
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL",
+					"Возникли проблемы при добавлении книги. " + "Скорее всего неправильно заполнена форма.");
+			return "redirect:/admin?add_book=true";
+		}
+		redirectAttributes.addFlashAttribute("adminInfoPreAction_OK", "Книга успешно добавлена.");
+		return "redirect:/admin?add_book=true";
+	}
+
+	@RequestMapping(value = "/addauthor", method = RequestMethod.POST)
+	public String addauthor(@ModelAttribute Author author, HttpServletRequest request,
+			RedirectAttributes redirectAttributes) throws IOException {
+		try {
+			logger.info("Created Author befor add to Database:" + author.getFio());
+
+			if (request.getParameter("errorPage").length() > 1) {
+				throw new Exception("Error in form add author");
+			}
+			authorDao.addAuthor(author);
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL",
+					"Возникли проблемы при добавлении автора. " + "Скорее всего неправильно заполнена форма.");
+			return "redirect:/admin?add_author=true";
+		}
+		redirectAttributes.addFlashAttribute("adminInfoPreAction_OK", "Автор успешно добавлен.");
+
+		return "redirect:/admin?add_author=true";
+	}
+
+	@RequestMapping(value = "/addgenre", method = RequestMethod.POST)
+	public String addgenre(@ModelAttribute Genre genre, HttpServletRequest request,
+			RedirectAttributes redirectAttributes) throws IOException {
+		try {
+			logger.info("Created Author befor add to Database:" + genre.getName());
+
+			if (request.getParameter("errorPage").length() > 1) {
+				throw new Exception("Error in form add author");
+			}
+			genreDao.addGenre(genre);
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL",
+					"Возникли проблемы при добавлении жанра. " + "Скорее всего неправильно заполнена форма.");
+			return "redirect:/admin?add_genre=true";
+		}
+		redirectAttributes.addFlashAttribute("adminInfoPreAction_OK", "Жанр успешно добавлен.");
+
+		return "redirect:/admin?add_genre=true";
+	}
+
+	@RequestMapping(value = "/addpublisher", method = RequestMethod.POST)
+	public String addpublisher(@ModelAttribute Publisher publisher, HttpServletRequest request,
+			RedirectAttributes redirectAttributes) throws IOException {
+		try {
+			logger.info("Created Publisher befor add to Database:" + publisher.getName());
+
+			if (request.getParameter("errorPage").length() > 1) {
+				throw new Exception("Error in form add author");
+			}
+			publisherDao.addPublisher(publisher);
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL",
+					"Возникли проблемы при добавлении жанра. " + "Скорее всего неправильно заполнена форма.");
+			return "redirect:/admin?add_publisher=true";
+		}
+		redirectAttributes.addFlashAttribute("adminInfoPreAction_OK", "Издание успешно добавлено.");
+
+		return "redirect:/admin?add_publisher=true";
+	}
+	
+	
+	@RequestMapping(value = "/removebook", method = RequestMethod.POST)
+	public String removebook(
+			HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) throws Exception {
+		String s = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+		for(int i = 0;i<5; i++){s += s; }
+		logger.info(s);
+		System.out.println(s);
+		System.out.println(s);
+		
+		return "redirect:/admin";
 	}
 
 }

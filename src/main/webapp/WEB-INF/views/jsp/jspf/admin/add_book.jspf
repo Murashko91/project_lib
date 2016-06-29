@@ -1,0 +1,152 @@
+
+<%@ page pageEncoding="UTF-8"%>
+
+
+<%@page import="java.util.ArrayList"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<div class="row">
+	<div class="col-md-10">
+		
+		
+		<hr class="style14" style="margin: 0px;">
+
+		<form:form method="POST" modelAttribute="book" action="addbook" autocomplete="true"
+			enctype="multipart/form-data" role="form" class="form-group">
+			<p class="bg-success small">${adminInfoPreAction_OK}</p>
+			<p class="bg-danger small" style="margin-top: 0px;">${adminInfoPreAction_FALL}</p>
+			<table class="table table-hover">
+				<tr>
+					<td><form:label path="author">
+			Автор
+				</form:label></td>
+					<td><form:select path="author" class="form-control">
+							<form:option value="NONE" label="Выберите автора из списка" />
+							<form:options items="${authorList}" />
+						</form:select></td>
+				</tr>
+				<tr>
+					<td><form:label path="genre">
+				Жанр
+			</form:label></td>
+					<td><form:select path="genre" class="form-control">
+							<form:option value="NONE" label="Выберите жанр из списка" />
+							<form:options items="${genreList }" />
+						</form:select></td>
+				</tr>
+
+
+
+				<tr>
+					<td><form:label path="publisher">
+				Издание
+			</form:label></td>
+					<td><form:select path="publisher" class="form-control">
+							<form:option value="NONE" label="Выберите издание из списка" />
+							<form:options items="${publisherList }" />
+						</form:select></td>
+				</tr>
+
+				<tr>
+					<td><form:label path="name">
+			Название книги
+			</form:label></td>
+					<td><form:input path="name" class="form-control" /></td>
+				</tr>
+
+				<tr>
+					<td><label for="choosePDF">Выберите файл pdf</label></td>
+					<td><label id="choosePDF" class="btn btn-default btn-sm"
+						for="my-file-selector"> <input id="my-file-selector"
+							type="file" style="display: none;"
+							onchange="
+						if(($(this).val()).toUpperCase().indexOf('pdf'.toUpperCase())>-1){
+						$('#upload-pdf-info').html($(this).val()); 
+						$('#upload-pdf-info').css({'color':'green'});
+						}else{
+						$('#upload-pdf-info').html('Файл не является  формата PDF');
+						$('#upload-pdf-info').css({'color':'red'}); 
+						$('#errorPage').val('error in form pdf');
+						}"
+							name="contentFile"> Выбор файла...
+					</label> <span class='label' style="margin: 0px; padding: 0px;"
+						id="upload-pdf-info"></span></td>
+				</tr>
+				
+				<tr>
+					<td><label for="chooseIMG">Выберите img</label></td>
+					<td><label id="chooseIMG" class="btn btn-default btn-sm"
+						for="my-img-selector"> <input id="my-img-selector"
+							type="file" style="display: none;"
+							onchange="
+							var name_ = $(this).val().toUpperCase();
+						if((name_.indexOf('.jpg'.toUpperCase())>-1)||
+						(name_.indexOf('.jpeg'.toUpperCase())>-1)||
+						(name_.indexOf('.gif'.toUpperCase())>-1)||
+						(name_.indexOf('.bmp'.toUpperCase())>-1)){
+						$('#upload-img-info').html($(this).val()); 
+						$('#upload-img-info').css({'color':'green'});
+						}else{
+						$('#upload-img-info').html('Файл не является  формата img');
+						$('#upload-img-info').css({'color':'red'}); 
+						$('#errorPage').val('error in form img');
+						}"
+							name="imageFile"> Выбор файла...
+					</label> <span class='label' style="margin: 0px; padding: 0px;"
+						id="upload-img-info"></span></td>
+				</tr>
+
+
+
+
+
+				<tr>
+					<td><form:label path="pageCount">
+			Введите количество страниц
+			</form:label></td>
+					<td><form:input path="pageCount" class="form-control" /></td>
+				</tr>
+
+				<tr>
+					<td><form:label path="isbn">
+			Введите isbn книги
+			</form:label></td>
+					<td><form:input path="isbn" class="form-control" /></td>
+				</tr>
+
+
+				<tr>
+					<td><form:label path="publishYear">
+			Введите год издания в формате гггг
+			</form:label></td>
+					<td><form:input path="publishYear" class="form-control" /></td>
+				</tr>
+				
+				
+				<tr>
+					<td><form:label path="descr">
+			Введите описание
+			</form:label></td>
+					<td><form:input  path="descr" class="form-control" /></td>
+				</tr>
+
+
+				<tr>
+					<td colspan="2" style="text-align: right;: red"><input
+						type="submit" class="btn btn-success" value="Добавить"></td>
+				</tr>
+
+			</table>
+
+		</form:form>
+	</div>
+</div>
+
+
+
+
+
