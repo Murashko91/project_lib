@@ -56,7 +56,7 @@ public class Publisher implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "publisher")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "publisher")
 	public Set<Book> getBooks() {
 		return this.books;
 	}

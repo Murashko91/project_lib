@@ -73,7 +73,7 @@
 						<button class="btn btn-default  btn-lg dropdown-toggle"
 							type="button" data-toggle="dropdown">Редактировать</button>
 						<ul class="dropdown-menu">
-							<li class="disabled"><a href="№">Книга</a></li>
+							<li ><a href="?edit_bookList">Книга</a></li>
 							<li class="disabled"><a href="#">Автор</a></li>
 							<li class="disabled"><a href="#">Жанр</a></li>
 							<li class="disabled"><a href="#">Издание</a></li>

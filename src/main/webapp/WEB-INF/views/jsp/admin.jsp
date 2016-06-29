@@ -39,19 +39,39 @@
 
 </c:if>
 
- <%-- 
-<c:if test="${param.add_user!= 0}">
-	<%@include file="jspf/admin/add_user.jspf"%>
-	</c:if>
+<c:if test="${param.remove_author != null}">
 	
-	<c:if test="${param.edit_users!= 0}">
-	<%@include file="jspf/edit_user.jspf"%>
-	</c:if>
-	
-	<c:if test="${param.edit_book != 0}">
-	<%@include file="jspf/letters.jspf"%>
-	<%@include file="jspf/left_menu.jspf"%>
-<%@include file="jspf/edit_books.jspf"%>
+<%@include file="jspf/admin/remove_author.jspf"%>
+
 </c:if>
- --%> 
+
+<c:if test="${param.remove_publisher != null}">
+	
+<%@include file="jspf/admin/remove_publisher.jspf"%>
+
+</c:if>
+
+<c:if test="${param.remove_genre != null}">
+	
+<%@include file="jspf/admin/remove_genre.jspf"%>
+
+</c:if>
+
+<c:if test="${param.remove_user != null}">
+	
+<%@include file="jspf/admin/remove_user.jspf"%>
+
+</c:if>
+<c:if test="${param.edit_bookList != null}">
+	
+<%@include file="jspf/admin/edit_bookList.jspf"%>
+
+</c:if>
+
+<c:if test="${param.edit_book != null}">
+	
+<%@include file="jspf/admin/edit_book.jspf"%>
+
+</c:if>
+
 <%@include file="jspf/footer.jspf"%>

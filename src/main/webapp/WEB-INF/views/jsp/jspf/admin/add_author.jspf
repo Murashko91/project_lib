@@ -42,7 +42,7 @@
 								if(isDate>-1){varDate = dStr.substring(isDate, isDate+10);$('#errorPage').val('0');
 					
 					$('.datt').val(varDate);
-					}else{ $('#errorPage').val('error in form pdf'); 	alert('Неверный формат даты');}
+					}else{ $('#errorPage').val('error in form pdf'); }
 					"  /> 
 					
 					
@@ -53,7 +53,8 @@
 								type="text" id="errorPage" name="errorPage"
 								style="display: none;"> <input type="submit"
 								class="btn btn-success" value="Добавить"
-								onclick="
+								onchange="
+								
 									if($('#errorPage').val()!=0){$('.datt').val('1991/12/08');
 									$('.datt').val('1991/12/08')};
 									//alert($('.datt').val());

@@ -2,6 +2,7 @@ package by.murashko.sergey.controllers;
 
 import java.awt.Image;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -44,15 +45,21 @@ import by.murashko.sergey.entities.*;
 @SessionAttributes({ "genreList", "publisherList", "usersList" })
 
 public class AdminController {
+	
+		
+	
 
 	@Autowired
 	private MessageSource messageSource;
 
-
 	@Autowired
 	private GenreDAO genreDao;
+
 	@Autowired
 	private AuthorDAO authorDao;
+
+	@Autowired
+	private UserDAO userDao;
 
 	@Autowired
 	private BookDAO bookDao;
@@ -80,15 +87,27 @@ public class AdminController {
 	public Publisher createNewPublisher() {
 		return new Publisher();
 	}
+	
+	@ModelAttribute
+	public List createNewGenreList() {
+		return genreDao.getGenres();
+	}
+	
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String admin(HttpServletRequest request, HttpServletResponse response, HttpSession session,
-			ModelMap modelMap) {
+			ModelMap modelMap, RedirectAttributes redirectAttributes) {
+	
 		modelMap.addAttribute("authorList", authorDao.getAuthors());
 		modelMap.addAttribute("publisherList", publisherDao.getPublishers());
 		modelMap.addAttribute("genreList", genreDao.getGenres());
 		modelMap.addAttribute("bookList", bookDao.getBooks());
-
+		modelMap.addAttribute("userList", userDao.getAllUsers());
+		System.out.println("!!!!!!!!!!!!!!! GenrelistSIZE" +genreDao.getGenres().size() +"to string"+ genreDao.getGenres().toString());
+		
+/*if(request.getParameter("edit_book")!=null&&request.getAttribute("editBook")==null){
+	return "redirect:/admin?edit_bookList=true";
+}*/
 		return "admin";
 	}
 
@@ -98,19 +117,22 @@ public class AdminController {
 			@RequestParam("publisher") String publisher, @RequestParam("imageFile") MultipartFile imageFile,
 			HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelMap modelMap,
 			RedirectAttributes redirectAttributes) throws IOException {
-		String s = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-		for(int i = 0;i<5; i++){s += s; }
-		logger.info(s);
-		System.out.println("SSSS"+s);
-		System.out.println("2222"+s);
+
 		try {
 			book.setContent(contentFile.getBytes());
 			book.setImage(imageFile.getBytes());
 			book.setAuthor(authorDao.getAuthorByName(author));
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" +author);
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" +genre);
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" +publisher);
 			book.setPublisher(publisherDao.getPublisherByName(publisher));
 			book.setGenre(genreDao.getGenreByName(genre));
-			if (request.getParameter("errorPage") != null) {
-				throw new Exception("Error in form add book");
+			if (Integer.parseInt(request.getParameter("errorPage")) != 0) {
+		//	throw new Exception("Error in form add book");
+				request.getParameter("errorPage").length();
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" +request.getParameter("errorPage"));
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" +request.getParameter("errorPage"));
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" +request.getParameter("errorPage").length());
 			}
 			bookDao.addBook(book);
 		} catch (Exception e) {
@@ -181,19 +203,242 @@ public class AdminController {
 
 		return "redirect:/admin?add_publisher=true";
 	}
-	
-	
+
 	@RequestMapping(value = "/removebook", method = RequestMethod.POST)
-	public String removebook(
-			HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelMap modelMap,
-			RedirectAttributes redirectAttributes) throws Exception {
-		String s = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-		for(int i = 0;i<5; i++){s += s; }
-		logger.info(s);
-		System.out.println(s);
-		System.out.println(s);
-		
-		return "redirect:/admin";
+	public String removebook(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			ModelMap modelMap, RedirectAttributes redirectAttributes) throws Exception {
+
+		logger.info("IN   '/removebook' method");
+		try {
+			Map<String, String[]> mapParamerts = request.getParameterMap();
+			Iterator<String> keySetIterator = mapParamerts.keySet().iterator();
+			int haveСhoiceDelMeter = 0;
+			while (keySetIterator.hasNext()) {
+
+				String key = keySetIterator.next();
+				if (key.contains("bookID_")) {
+					logger.info("key_delBook: " + key + "ID: " + (mapParamerts.get(key))[0]);
+					haveСhoiceDelMeter++;
+					bookDao.removeBook(Long.parseLong((mapParamerts.get(key)[0])));
+				}
+			}
+			if (haveСhoiceDelMeter == 0) {
+				redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL", "Не выбрана ни одна книга. ");
+				return "redirect:/admin?remove_book=true";
+			}
+		} catch (Exception e) {
+			logger.warn("Exceptiont in /removebook' method");
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL", "Возникли проблемы при удалении книги. ");
+			return "redirect:/admin?remove_book=true";
+		}
+		redirectAttributes.addFlashAttribute("adminInfoPreAction_OK", "Выбранные книги успешно удалены. ");
+		return "redirect:/admin?remove_book=true";
 	}
+
+	@RequestMapping(value = "/removeauthor", method = RequestMethod.POST)
+	public String removeauthor(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			ModelMap modelMap, RedirectAttributes redirectAttributes) throws Exception {
+		String redirect = "redirect:/admin?remove_author=true";
+		logger.info("IN   '/removeauthor' method");
+		try {
+			Map<String, String[]> mapParamerts = request.getParameterMap();
+			Iterator<String> keySetIterator = mapParamerts.keySet().iterator();
+			int haveСhoiceDelMeter = 0;
+			while (keySetIterator.hasNext()) {
+
+				String key = keySetIterator.next();
+				if (key.contains("authorID_")) {
+					logger.info("key_delAuthor: " + key + "ID: " + (mapParamerts.get(key))[0]);
+					haveСhoiceDelMeter++;
+					authorDao.removeAuthor(Integer.parseInt(mapParamerts.get(key)[0]));
+				}
+			}
+			if (haveСhoiceDelMeter == 0) {
+				redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL", "Не выбран автор. ");
+				return redirect;
+			}
+		} catch (Exception e) {
+			logger.warn("Exceptiont in /removeauthor' method");
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL", "Возникли проблемы при удалении автора ");
+			return redirect;
+		}
+		redirectAttributes.addFlashAttribute("adminInfoPreAction_OK", "Выбранные авторы успешно удалены. ");
+		return redirect;
+	}
+
+	@RequestMapping(value = "/removegenre", method = RequestMethod.POST)
+	public String removegenre(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			ModelMap modelMap, RedirectAttributes redirectAttributes) throws Exception {
+
+		logger.info("IN   '/removegenre' method");
+		int haveСhoiceDelMeter = 0;
+		String redirect = "redirect:/admin?remove_genre=true";
+		try {
+			Map<String, String[]> mapParamerts = request.getParameterMap();
+			Iterator<String> keySetIterator = mapParamerts.keySet().iterator();
+
+			while (keySetIterator.hasNext()) {
+
+				String key = keySetIterator.next();
+				if (key.contains("genreID_")) {
+					logger.info("key_delGenre: " + key + "ID: " + (mapParamerts.get(key))[0]);
+					haveСhoiceDelMeter++;
+					genreDao.removeGenre(Integer.parseInt(mapParamerts.get(key)[0]));
+				}
+			}
+			if (haveСhoiceDelMeter == 0) {
+				redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL", ":Жанр не выбран. ");
+				return redirect;
+			}
+		} catch (Exception e) {
+			logger.warn("Exceptiont in /removegenre' method");
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL", "Возникли проблемы при удалении жанра. ");
+			return redirect;
+		}
+		redirectAttributes.addFlashAttribute("adminInfoPreAction_OK", "Выбранные жанры успешно удалены. ");
+		return redirect;
+	}
+
+	@RequestMapping(value = "/removepublisher", method = RequestMethod.POST)
+	public String removepublisher(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			ModelMap modelMap, RedirectAttributes redirectAttributes) throws Exception {
+		int haveСhoiceDelMeter = 0;
+		String redirect = "redirect:/admin?remove_publisher=true";
+		logger.info("IN   '/removepublisher' method");
+		try {
+			Map<String, String[]> mapParamerts = request.getParameterMap();
+			Iterator<String> keySetIterator = mapParamerts.keySet().iterator();
+			while (keySetIterator.hasNext()) {
+
+				String key = keySetIterator.next();
+				if (key.contains("publisherID_")) {
+					logger.info("key_delPublisher: " + key + "ID: " + (mapParamerts.get(key))[0]);
+					haveСhoiceDelMeter++;
+					publisherDao.removePublisher(Integer.parseInt(mapParamerts.get(key)[0]));
+				}
+			}
+			if (haveСhoiceDelMeter == 0) {
+				redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL", ": Издание не выбрано. ");
+				return redirect;
+			}
+		} catch (Exception e) {
+			logger.warn("Exceptiont in /removepublisher' method");
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL", "Возникли проблемы при удалении издания. ");
+			return redirect;
+		}
+		redirectAttributes.addFlashAttribute("adminInfoPreAction_OK", "Выбранные издания успешно удалены. ");
+		return redirect;
+	}
+
+	@RequestMapping(value = "/removeuser", method = RequestMethod.POST)
+	public String removeuser(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			ModelMap modelMap, RedirectAttributes redirectAttributes) throws Exception {
+		int haveСhoiceDelMeter = 0;
+		String redirect = "redirect:/admin?remove_user=true";
+		logger.info("IN   '/removeuser' method");
+		try {
+			Map<String, String[]> mapParamerts = request.getParameterMap();
+			Iterator<String> keySetIterator = mapParamerts.keySet().iterator();
+			while (keySetIterator.hasNext()) {
+
+				String key = keySetIterator.next();
+				if (key.contains("userID_")) {
+					logger.info("key_delUser: " + key + "ID: " + (mapParamerts.get(key))[0]);
+					haveСhoiceDelMeter++;
+					userDao.removeUser(Integer.parseInt(mapParamerts.get(key)[0]));
+				}
+			}
+			if (haveСhoiceDelMeter == 0) {
+				redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL", ": Пользователь не выбран. ");
+				return redirect;
+			}
+		} catch (Exception e) {
+			logger.warn("Exceptiont in /removeuser' method");
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL",
+					"Возникли проблемы при удалении пользователя. ");
+			return redirect;
+		}
+		redirectAttributes.addFlashAttribute("adminInfoPreAction_OK", "Выбранные пользователи успешно удалены. ");
+		return redirect;
+	}
+
+	@RequestMapping(value = "/editbook", method = RequestMethod.POST)
+	public String editbook(@ModelAttribute Book book, @RequestParam("contentFile") MultipartFile contentFile,
+			@RequestParam("genre") String genre, @RequestParam("author") String author,
+			@RequestParam("publisher") String publisher, @RequestParam("imageFile") MultipartFile imageFile,
+			HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelMap modelMap,
+			RedirectAttributes redirectAttributes) throws IOException {
+		
+		String redidect= "redirect:/admin?edit_bookList=true";
+		try {
+		book.setId(Long.parseLong(request.getParameter("id")));
+		Book editBook =bookDao.getBookById(Long.parseLong(request.getParameter("id")));
+			
+			if (contentFile.getSize()<1) {
+				book.setContent(editBook.getImage());
+			}else{book.setContent(contentFile.getBytes());}
+			if (imageFile.getSize()<1) {
+				book.setImage(editBook.getImage());
+			}else{
+				book.setImage(imageFile.getBytes());
+				}
+			
+			if (author == null||publisher == null||genre == null) {
+				throw new Exception("Error in form add book");
+			}
+					
+			book.setAuthor(authorDao.getAuthorByName(author));
+			book.setPublisher(publisherDao.getPublisherByName(publisher));
+			book.setGenre(genreDao.getGenreByName(genre));
+			//if (request.getParameter("errorPage") != "0") {
+			//	throw new Exception("Error in form add book");
+			//}
+						
+		
+			bookDao.upgdateBook(book);
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL",
+					"Возникли проблемы при добавлении книги. " + "Скорее всего неправильно заполнена форма.");
+			return redidect;
+		}
+		redirectAttributes.addFlashAttribute("adminInfoPreAction_OK", "Книга успешно изменена.");
+		return redidect;
+	}
+	
+	@RequestMapping(value = "/redirect_editbook", method = RequestMethod.POST)
+	public String redirect_editbook(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			ModelMap modelMap, RedirectAttributes redirectAttributes) throws Exception {
+		
+		
+		logger.info("IN   '/redirect_editbook' method");
+		try {
+		String bookID = request.getParameter("editBookID");
+				
+			
+			if (bookID != null) {
+				redirectAttributes.addFlashAttribute("editBook", bookDao.getBookById(Long.parseLong(request.getParameter("editBookID"))));
+			
+				return "redirect:/admin?edit_book=true";
+			}else{
+				throw new Exception("Error in form editbooklist");
+						}
+			
+		} catch (Exception e) {
+			logger.warn("Exceptiont in /redirect_editbook' method");
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL",
+					"Возникли проблемы. Скорее всего книга не выбрана. ");
+			return "redirect:/admin?edit_bookList=true";
+		}
+		
+	}
+	
 
 }

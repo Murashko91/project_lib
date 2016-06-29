@@ -11,21 +11,31 @@
 
 <div class="row">
 	<div class="col-md-10">
-		
-		
+
+
 		<hr class="style14" style="margin: 0px;">
 
-		<form:form method="POST" modelAttribute="book" action="addbook" autocomplete="true"
-			enctype="multipart/form-data" role="form" class="form-group">
+		<form:form method="POST" modelAttribute="book" action="editbook"
+			autocomplete="true" enctype="multipart/form-data" role="form"
+			class="form-group">
 			<p class="bg-success small">${adminInfoPreAction_OK}</p>
 			<p class="bg-danger small" style="margin-top: 0px;">${adminInfoPreAction_FALL}</p>
 			<table class="table table-hover">
+				
+				
+			
+			
+				
+			
+				
 				<tr>
 					<td><form:label path="author">
+								
 			Автор
 				</form:label></td>
 					<td><form:select path="author" class="form-control">
-							<form:option value="NONE" label="Выберите автора из списка" />
+							<form:option value="${editBook.author.fio}"
+								label="${editBook.author.fio}" />
 							<form:options items="${authorList}" />
 						</form:select></td>
 				</tr>
@@ -34,7 +44,8 @@
 				Жанр
 			</form:label></td>
 					<td><form:select path="genre" class="form-control">
-							<form:option value="NONE" label="Выберите жанр из списка" />
+							<form:option value="${editBook.genre.name}"
+								label="${editBook.genre.name}" />
 							<form:options items="${genreList }" />
 						</form:select></td>
 				</tr>
@@ -46,8 +57,9 @@
 				Издание
 			</form:label></td>
 					<td><form:select path="publisher" class="form-control">
-							<form:option value="NONE" label="Выберите издание из списка" />
-							<form:options items="${publisherList }" />
+							<form:option value="${editBook.publisher.name}"
+								label="${editBook.genre.name}" />
+							<form:options items="${publisherList}" />
 						</form:select></td>
 				</tr>
 
@@ -55,30 +67,33 @@
 					<td><form:label path="name">
 			Название книги
 			</form:label></td>
-					<td><form:input path="name" class="form-control" /></td>
+					<td><form:input value="${editBook.name}" path="name"
+							class="form-control" /> 
+							<form:input value="${editBook.id}"
+							path="id" style="display: none;" /></td>
 				</tr>
 
 				<tr>
-					<td><label for="choosePDF">Выберите файл pdf</label></td>
+					<td><label for="choosePDF">Выберите новый pdf</label></td>
 					<td><label id="choosePDF" class="btn btn-default btn-sm"
 						for="my-file-selector"> <input id="my-file-selector"
 							type="file" style="display: none;"
 							onchange="
 						if(($(this).val()).toUpperCase().indexOf('pdf'.toUpperCase())>-1){
 						$('#upload-pdf-info').html($(this).val()); 
-						$('#upload-pdf-info').css({'color':'green'});
+						$('#upload-pdf-info').attr('class', 'text-success');
 						}else{
 						$('#upload-pdf-info').html('Файл не является  формата PDF');
-						$('#upload-pdf-info').css({'color':'red'}); 
-						$('#errorPage').val('error in form pdf');
+						$('#upload-pdf-info').attr('class', 'text-danger');
+						
 						}"
 							name="contentFile"> Выбор файла...
-					</label> <span class='label' style="margin: 0px; padding: 0px;"
-						id="upload-pdf-info"></span></td>
+					</label> <span class='text-info' style="margin: 0px; padding: 0px;"
+						id="upload-pdf-info">...без изменений &#10004;</span></td>
 				</tr>
-				
+
 				<tr>
-					<td><label for="chooseIMG">Выберите img</label></td>
+					<td><label for="chooseIMG">Выберите новый img</label></td>
 					<td><label id="chooseIMG" class="btn btn-default btn-sm"
 						for="my-img-selector"> <input id="my-img-selector"
 							type="file" style="display: none;"
@@ -89,34 +104,32 @@
 						(name_.indexOf('.gif'.toUpperCase())>-1)||
 						(name_.indexOf('.bmp'.toUpperCase())>-1)){
 						$('#upload-img-info').html($(this).val()); 
-						$('#upload-img-info').css({'color':'green'});
-						$('#errorPage').val('0');
+						$('#upload-img-info').attr('class', 'text-success');
 						}else{
 						$('#upload-img-info').html('Файл не является  формата img');
-						$('#upload-img-info').css({'color':'red'}); 
-						$('#errorPage').val('error in form img');
+						$('#upload-img-info').attr('class', 'text-danger');
+						
 						}"
 							name="imageFile"> Выбор файла...
-					</label> <span class='label' style="margin: 0px; padding: 0px;"
-						id="upload-img-info"></span></td>
+					</label> <span class="text-info" style="margin: 0px; padding: 0px;"
+						id="upload-img-info">...без изменений &#10004;</span></td>
 				</tr>
-
-
-
 
 
 				<tr>
 					<td><form:label path="pageCount">
 			Введите количество страниц
 			</form:label></td>
-					<td><form:input path="pageCount" class="form-control" /></td>
+					<td><form:input value="${editBook.pageCount}" path="pageCount"
+							class="form-control" /></td>
 				</tr>
 
 				<tr>
 					<td><form:label path="isbn">
 			Введите isbn книги
 			</form:label></td>
-					<td><form:input path="isbn" class="form-control" /></td>
+					<td><form:input value="${editBook.isbn}" path="isbn"
+							class="form-control" /></td>
 				</tr>
 
 
@@ -124,23 +137,28 @@
 					<td><form:label path="publishYear">
 			Введите год издания в формате гггг
 			</form:label></td>
-					<td><form:input path="publishYear" class="form-control" /></td>
+					<td><form:input value="${editBook.publishYear}"
+							path="publishYear" class="form-control" /></td>
 				</tr>
-				
-				
+
+
 				<tr>
 					<td><form:label path="descr">
 			Введите описание
 			</form:label></td>
-					<td><form:input  path="descr" class="form-control" /></td>
+					<td><form:input value="${editBook.descr}" path="descr"
+							class="form-control" /></td>
 				</tr>
 
 
+
+				<script>
+					if($('#id').val()>0){;}else{ window.location.href='admin?edit_bookList=true';}
+				</script> 
 				<tr>
-					<td colspan="2" style="text-align: right;"> <input
-						type="text" id="errorPage" name="errorPage" value="0"
-						style="display: none;"><input
-						type="submit" class="btn btn-success" value="Добавить"></td>
+					<td colspan="2" style="text-align: right;"><input type="text"
+						id="errorPage" name="errorPage" value="0" style="display: none;"><input
+						type="submit" class="btn btn-success" value="Сохранить"></td>
 				</tr>
 
 			</table>

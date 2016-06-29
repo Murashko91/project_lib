@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import by.murashko.sergey.dao.interfaces.AuthorDAO;
 import by.murashko.sergey.entities.Author;
 import by.murashko.sergey.entities.Book;
+import by.murashko.sergey.entities.Genre;
 import by.murashko.sergey.entities.Users;
 import scala.annotation.meta.getter;
 
@@ -53,5 +54,19 @@ public class AuthorDAOImpl implements AuthorDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.save(author);
 	}
+	
+	
+	@Transactional
+	@Override
+	  public void removeAuthor(int id){
+	    	Session session = this.sessionFactory.getCurrentSession();
+	    	Author author = (Author) session.load(Author.class, new Long(id));
+			if (null != author) {
+				session.delete(author);
+			}else throw new NullPointerException(" WARN! genre = NULL in session.delete(author);");
+	    	
+	    	
+	    }
+
 
 }

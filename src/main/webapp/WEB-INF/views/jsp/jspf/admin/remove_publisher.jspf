@@ -1,0 +1,58 @@
+
+<%@ page pageEncoding="UTF-8"%>
+
+
+<%@page import="java.util.ArrayList"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<div class="row text-info">
+	<div class="col-md-10">
+
+
+		<hr class="style14" style="margin: 0px;">
+
+		<form:form method="POST" action="removepublisher" autocomplete="true"
+			class="form-group">
+			<p class="bg-success small">${adminInfoPreAction_OK}</p>
+			<p class="bg-danger small" style="margin-top: 0px;">${adminInfoPreAction_FALL}</p>
+			<table class="table table-hover">
+
+
+				<c:forEach items="${publisherList}" var="publisher">
+
+
+					<tr>
+						<td><label> <input type="checkbox"
+								value="${publisher.id}" name="publisherID_${publisher.id}">
+								Удалить
+						</label></td>
+
+						<td><p>
+								<strong><big>${publisher.name}</big></strong>
+							</p></td>
+
+					</tr>
+
+				</c:forEach>
+
+
+				<tr>
+					<td colspan="2" style="text-align: right"><input type="text"
+						id="errorPage" name="errorPage" value="0" style="display: none;">
+						<input type="submit" class="btn btn-danger" value="Удалить"></td>
+				</tr>
+
+			</table>
+
+		</form:form>
+	</div>
+</div>
+
+
+
+
+

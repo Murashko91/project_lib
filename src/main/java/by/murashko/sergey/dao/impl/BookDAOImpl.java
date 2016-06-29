@@ -114,13 +114,12 @@ public class BookDAOImpl implements BookDAO {
 				.setResultTransformer(Transformers.aliasToBean(Book.class));
 		return criteria.list();
 	}
-	
-/*	@Transactional
+/*	
+	@Transactional
 	@Override
 	public Book  getBookById(Long id){
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
-		criteria.add(Restrictions.eq("id", id));
-		return (Book)criteria.uniqueResult();
+		return (Book) sessionFactory.getCurrentSession().createCriteria(Book.class).add(Restrictions.eq("id", id)).uniqueResult();
+		
 	}*/
 	
 	
@@ -128,7 +127,7 @@ public class BookDAOImpl implements BookDAO {
 	@Override
 	public Book  getBookById(Long id){
 	
-		return (Book)sessionFactory.getCurrentSession().load(Book.class, id);
+		return (Book)sessionFactory.getCurrentSession().get(Book.class, id);
 	}
 
 
@@ -152,6 +151,8 @@ public class BookDAOImpl implements BookDAO {
 	public byte[] getContent(Long id) {
 		byte[] content = getBookById(id).getContent();
 		return content;
+		
+		
 	}
 	@Transactional
 	@Override
@@ -164,13 +165,22 @@ public class BookDAOImpl implements BookDAO {
 	
 	@Override
 	@Transactional
-	public void removeBook(int id) {
+	public void removeBook(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
 		Book book = (Book) session.load(Book.class, new Long(id));
 		if (null != book) {
 			session.delete(book);
 		}
 	}
+	
+	@Override
+	@Transactional
+	public void upgdateBook(Book book){
+		Session session = this.sessionFactory.getCurrentSession();
+		session.update(book);
+	}
+	
+	
 
 	
 	

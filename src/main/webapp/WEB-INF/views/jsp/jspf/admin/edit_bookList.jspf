@@ -15,19 +15,18 @@
 
 		<hr class="style14" style="margin: 0px;">
 
-		<form:form method="POST" action="removebook" autocomplete="true"
-			class="form-group">
+		<form:form method="POST" action="redirect_editbook" autocomplete="true"
+		 role="form" class="form-group">
 			<p class="bg-success small">${adminInfoPreAction_OK}</p>
 			<p class="bg-danger small" style="margin-top: 0px;">${adminInfoPreAction_FALL}</p>
 			<table class="table table-hover">
-
 
 				<c:forEach items="${bookList}" var="book">
 
 
 					<tr>
-						<td><label > <input type="checkbox" value="${book.id}"
-								name="bookID_${book.id}"> Удалить
+						<td><label> <input type="radio" name="editBookID"
+								value="${book.id}"> Редактировать
 						</label>
 							<p>
 								<img src="imageController/${book.id}.jpg" height="100"
@@ -53,10 +52,11 @@
 					<td colspan="3" style="text-align: right;: red"><input
 						type="text" id="errorPage" name="errorPage" value="0"
 						style="display: none;"> <input type="submit"
-						class="btn btn-danger" value="Удалить"></td>
+						class="btn btn-danger" value="Редактор"></td>
 				</tr>
 
 			</table>
+
 
 		</form:form>
 	</div>

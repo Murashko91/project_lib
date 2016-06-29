@@ -34,7 +34,7 @@ public class GenreDAOImpl implements GenreDAO{
     @Override
     @Transactional
     public List<Genre> getGenres() {
-    	  System.out.println("!!!!!!!!!!!getsession"+sessionFactory.getCurrentSession().toString());
+    	 
        return sessionFactory.getCurrentSession().createCriteria(Genre.class).list();}
      
       
