@@ -13,15 +13,18 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter { // impleme
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-try{
-		if ((request.getSession().getAttribute("go") == null) && (request.getRequestURI().contains("exit")
-				|| request.getRequestURI().contains("books") || (request.getRequestURI().contains("admin")
-						&& ((Users) request.getSession().getAttribute("user")).getIsAdmin() != 1))) {
+		try {
+			if ((request.getSession().getAttribute("go") == null)
+					&& (request.getRequestURI().contains("exit") || (request.getRequestURI().contains("admin")
+							&& ((Users) request.getSession().getAttribute("user")).getIsAdmin() != 1))) {
 
+				response.sendRedirect(request.getContextPath());
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 			response.sendRedirect(request.getContextPath());
-
 		}
-}catch(Exception e){ e.printStackTrace(); response.sendRedirect(request.getContextPath());}
 	}
 
 }
