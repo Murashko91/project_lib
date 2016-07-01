@@ -7,6 +7,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
 <div class="container">
 	<div class="row">
 		<%@include file="jspf/header.jspf"%></div>
@@ -25,6 +26,7 @@
 		</div>
 	</div>
 	<%@include file="jspf/footer.jspf"%>
+	
 </div>
 
 

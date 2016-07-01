@@ -72,20 +72,21 @@
 							<div class="panel panel-success">
 								<div class="panel-heading">
 									<p class="panel-title">Добро пожаловать, ${user.name} !</p>
-									
-									
-									
+
+
+
 								</div>
 
 								<div class="panel-body">
 									<p class="small text-success">
 										<img align="left"
 											src="<c:url value="/resources/img/user.png" />" alt="user"
-											name="user" height="30" width="40" /> 
-											<c:if test="${user.isAdmin==1}">
-										<a href="admin" class="btn btn-secondary  btn-warning btn-xs">Администраторская </a>
-									</c:if>
-									<a class="btn btn-danger btn-xs" href="logout">Выход</a>
+											name="user" height="30" width="40" />
+										<c:if test="${user.isAdmin==1}">
+											<a href="admin" class="btn btn-secondary  btn-warning btn-xs">Администраторская
+											</a>
+										</c:if>
+										<a class="btn btn-danger btn-xs" href="logout">Выход</a>
 									</p>
 
 
@@ -108,21 +109,14 @@
 										<spring:message code="username" />
 									</form:label>
 									<form:input path="name" cssClass="form-control" />
-									<p align="left" style="padding: 0; margin: 0">
-										<form:errors path="name" cssClass="bg-danger small" />
-									</p>
+
 
 									<form:label path="password">
 										<spring:message code="password" />
 									</form:label>
 									<form:password path="password" cssClass="form-control" />
-									<p align="left" style="padding: 0; margin: 0">
-										<form:errors path="password" cssClass="bg-danger small" />
-									</p>
-									<h5 align="left" style="padding: 0; margin: 0"
-										class="bg-danger">
-										<small>${errorAuthentication}</small>
-									</h5>
+
+
 									<input style="float: right; margin-top: 1px;" type="submit"
 										class="btn btn-success btn-md"
 										value="<spring:message code="login"/>">
@@ -149,10 +143,10 @@
 
 			<div class="col-md-12 ">
 				<div class="btn-group " role="group">
-					<a href="main" class="btn btn-secondary  btn-default btn-lg  ">Главная</a> <a
-						class="btn btn-secondary  btn-default btn-lg ">О нас</a> <a
-						href="#" class="btn btn-secondary  btn-default btn-lg">Связь
-						c администарацией</a>
+					<a href="main" class="btn btn-secondary  btn-default btn-lg  ">Главная</a>
+					<a class="btn btn-secondary  btn-default btn-lg ">О нас</a> <a
+						href="#" class="btn btn-secondary  btn-default btn-lg">Связь c
+						администарацией</a>
 				</div>
 
 			</div>

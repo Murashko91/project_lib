@@ -1,10 +1,13 @@
 
-<%@ page pageEncoding="UTF-8" %>
+<%@ page pageEncoding="UTF-8"%>
 
-<div > Моя онлайн библиотека</div>
-  </div><!-- end .container -->
+
+<div class="footer">
+
+
+</div>
+
 
 
 </body>
 </html>
-

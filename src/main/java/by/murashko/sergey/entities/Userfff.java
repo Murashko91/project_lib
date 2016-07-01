@@ -4,13 +4,13 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class User {
+public class Userfff {
 
-	public User() {
+	public Userfff() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(String name) {
+	public Userfff(String name) {
 		super();
 		this.name = name;
 	}

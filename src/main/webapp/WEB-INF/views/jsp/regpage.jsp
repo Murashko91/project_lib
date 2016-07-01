@@ -8,55 +8,73 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<link href="<c:url value="/resources/css/home.css" />" rel="stylesheet">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
+<!DOCTYPE html>
+<div class="container">
+	<div class="row">
+		<%@include file="jspf/reg_header.jspf"%></div>
+	<div class="row">
+		<%@include file="jspf/letters.jspf"%>
+	</div>
+	<div class="row">
+		<hr style="margin: 0; padding: 0; margin-left: 20px;">
+		<div class="col-md-2">
+			<%@include file="jspf/left_menu.jspf"%>
+		</div>
 
-<body>
-${addUser}
+		<div class="col-md-10">
+			<br>
 
-	
-		<form:form method="POST" modelAttribute="user" action="registration"
-			class="box login">
-
-
-			<fieldset class="boxBody">
-
-				<span style="float: right"> <a href="?lang=en">en</a> <a
-					href="?lang=ru">ru</a>
-				</span>
+			<div class="row ">
+				<div class="col-md-7 col-md-offset-2 ">
 
 
-
-				<form:label path="name">
-					<spring:message code="username" />
-				</form:label>
-				<form:input path="name" />
-				<form:errors path="name" cssClass="error" />
-
-				<form:label path="password">
-					<spring:message code="password" />
-				</form:label>
-				<form:password path="password" />
-				<form:errors path="password" cssClass="error" />
-				
-				<form:label path="mail">
-					<spring:message code="mail" />
-				</form:label>
-				<form:input path="mail" />
-				<form:errors path="mail" cssClass="error" />
-				
-
-			</fieldset>
-
-			<footer>  <input type="submit" class="btnLogin"
-				value="<spring:message code="regitration"/>"> </footer>
+					<div class="panel  panel-info">
+					<div class="panel-heading">
+					Заполните форму для регистрации
+					</div>
+						<div class="form-group  panel-body ">
+							${addUserError}
 
 
-		</form:form>
-</body>
-</html>
+							<form:form method="POST" modelAttribute="user"
+								action="registration" class="box login">
+
+
+
+							<p>	<form:label path="name">
+									<spring:message code="username" />
+								</form:label></p>
+								<form:input path="name" cssClass="form-control" />
+								<form:errors path="name" cssClass="bg-danger small" />
+								<p class="bg-danger small" style="margin: 0; padding: 0;">${addUserError}</p>
+
+							<p>	<form:label path="password">
+									<spring:message code="password" />
+								</form:label></p>
+								<form:password path="password" cssClass="form-control" />
+								<form:errors path="password" cssClass="bg-danger small" />
+
+							<p>	<form:label path="mail">
+									<spring:message code="mail" />
+								</form:label></p>
+								<form:input path="mail" cssClass="form-control" />
+								<form:errors path="mail" cssClass="bg-danger small" />
+
+
+
+							<div class="panel-footer">
+									<input type="submit" class="btn btn-info form-control"
+										value="<spring:message code="regitration"/>">
+								</div>
+
+
+							</form:form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<%@include file="jspf/footer.jspf"%>
+</div>

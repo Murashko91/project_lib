@@ -13,7 +13,7 @@
 		
 	<c:forEach items="${bookList}" var="book">
 		<div class="row">
-			<div class="col-md-12"><big><p class="text-center bg-primary">${book.name}</p></big></div>
+			<div class="col-md-12"><p class="text-center bg-primary">${book.name}</p></div>
 		</div>
 		<div class="row">
 			<div class="col-md-3">

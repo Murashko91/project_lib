@@ -64,13 +64,14 @@ public class LibraryController {
 		return genreDao.getGenres();
 	}
 
-	@ModelAttribute
-	public User createNewUser() {
-		return new User("User");
+	@ModelAttribute("user")
+	public Users createNewUser() {
+		return new Users("User", "password", "mail@mail.ml");
 	}
 
+
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public String gomain(@ModelAttribute("genreList") List<Genre> genreList, @Valid @ModelAttribute("user") User user,
+	public String gomain(@ModelAttribute("genreList") List<Genre> genreList, @Valid @ModelAttribute("user") Users user,
 			BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response,
 			HttpSession session) {
 		logger.info("go to main-page on library");

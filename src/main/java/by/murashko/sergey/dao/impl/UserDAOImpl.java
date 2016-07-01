@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import by.murashko.sergey.dao.interfaces.UserDAO;
 import by.murashko.sergey.entities.Book;
-import by.murashko.sergey.entities.User;
+
 import by.murashko.sergey.entities.Users;
 
 import java.util.ArrayList;
@@ -30,10 +30,10 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	@Transactional
-	public void addUser(User user) {
-		Users userDb = new Users(user.getName(), user.getPassword(), user.getMail());
+	public void addUser(Users user) {
+		//Users userDb = new Users(user.getName(), user.getPassword(), user.getMail());
 		Session session = this.sessionFactory.getCurrentSession();
-		session.persist(userDb);
+		session.persist(user);
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	@Transactional
-	public boolean acceptUser(User user) {
+	public boolean acceptUser(Users user) {
 		try {
 			Users dbUser = getUserFromDbByName(user.getName());
 			// без хеш-кода почему-то не работает. над разбираться в хибернейте

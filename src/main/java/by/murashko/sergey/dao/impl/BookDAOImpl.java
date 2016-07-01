@@ -15,7 +15,7 @@ import by.murashko.sergey.dao.interfaces.BookDAO;
 import by.murashko.sergey.entities.Author;
 import by.murashko.sergey.entities.Book;
 import by.murashko.sergey.entities.Genre;
-import by.murashko.sergey.entities.User;
+
 import by.murashko.sergey.entities.Users;
 
 import java.util.ArrayList;

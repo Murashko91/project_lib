@@ -42,7 +42,7 @@ import by.murashko.sergey.dao.interfaces.*;
 import by.murashko.sergey.entities.*;
 
 @Controller
-@SessionAttributes({ "genreList", "publisherList", "usersList" })
+@SessionAttributes({ "genreList", "publisherList", "usersList", })
 
 public class AdminController {
 
@@ -83,6 +83,11 @@ public class AdminController {
 	@ModelAttribute
 	public Publisher createNewPublisher() {
 		return new Publisher();
+	}
+	
+	@ModelAttribute("user")
+	public Users createNewUser() {
+		return new Users();
 	}
 
 	@ModelAttribute

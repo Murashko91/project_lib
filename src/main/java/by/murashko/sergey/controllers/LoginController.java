@@ -36,22 +36,23 @@ public class LoginController {
 
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-	@ModelAttribute
-	public User createNewUser() {
-		return new User("User");
+	@ModelAttribute("user")
+	public Users createNewUser() {
+		return new Users("User", "password", "mail@mail.ml");
 	}
 
 	private void addAuthentication(HttpSession session) {
 
 		session.setAttribute("go", "true");
 	}
+	
 
 	private void removeAuthentication(HttpSession session) {
 		session.removeAttribute("go");
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String main(@ModelAttribute User user, HttpSession session, Locale locale, ModelMap model) {
+	public String main(@ModelAttribute Users user, HttpSession session, Locale locale, ModelMap model) {
 		logger.info(locale.getDisplayLanguage());
 
 		logger.info(messageSource.getMessage("locale", new String[] { locale.getDisplayName(locale) }, locale));
@@ -60,15 +61,16 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/check-user", method = RequestMethod.POST)
-	public String checkUser(Locale locale, @Valid @ModelAttribute("user") User user, BindingResult bindingResult,
+	public String checkUser(Locale locale, @Valid @ModelAttribute("user") Users user, BindingResult bindingResult,
 			ModelMap modelMap, RedirectAttributes redirectAttributes, HttpSession session) {
 		if (!bindingResult.hasFieldErrors("user")&&!bindingResult.hasFieldErrors("password")) {
 			if (userDao.acceptUser(user)) {
 				if (userDao.getUserFromDbByName(user.getName()).getIsAdmin() != null) {
 					user.setIsAdmin(1);
-				} else {
+						} else {
 					user.setIsAdmin(0);
 				}
+				
 				addAuthentication(session);
 			} else {
 				redirectAttributes.addFlashAttribute("errorAuthentication",
@@ -80,21 +82,26 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public String registration(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, ModelMap modelMap,
-			RedirectAttributes redirectAttributes, Locale locale) {
+	public String registration(@Valid @ModelAttribute("user") Users user, BindingResult bindingResult, ModelMap modelMap,
+			RedirectAttributes redirectAttributes, Locale locale, HttpSession session) {
 
 		if (!bindingResult.hasErrors()) {
 
 			try {
+					System.out.println(user.getName());
+				user.delId();
 				userDao.addUser(user);
 
 			} catch (Exception e) {
 
-				redirectAttributes.addFlashAttribute("addUser",
+				redirectAttributes.addFlashAttribute("addUserError",
 						messageSource.getMessage("addusererror", new String[] {}, locale));
+				
 				return "redirect:/regpage";
 
 			}
+			redirectAttributes.addFlashAttribute("regStatus","Поздравляем " +user.getName()+", вы успешно зарегистрировались. Запомните ваш пароль: "+user.getPassword()+".");
+			addAuthentication(session);
 			return "redirect:/main";
 		} else {
 
@@ -103,20 +110,21 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(Locale locale, @Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+	public String login(Locale locale, @Valid @ModelAttribute("user") Users user, BindingResult bindingResult) {
 
 		return "login";
 	}
 
 	@RequestMapping(value = "/regpage", method = RequestMethod.GET)
-	public String regpage(Locale locale, @Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+	public String regpage(Locale locale, @Valid @ModelAttribute("user") Users user, BindingResult bindingResult) {
 
 		return "regpage";
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String login(Locale locale, HttpSession session, ModelMap model) {
+	public String login(@ModelAttribute("user") Users user,Locale locale, HttpSession session, ModelMap model) {
 		removeAuthentication(session);
+		user.setIsAdmin(0);
 		return "redirect:/";
 	}
 

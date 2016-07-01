@@ -19,8 +19,8 @@
 		</div>
 
 		<div class="col-md-10">
-
-	
+<br>
+	<label class="bg-success text-success"><big>${regStatus}</big></label>
 	
 		</div>
 	</div>
