@@ -65,7 +65,7 @@ public class LoginController {
 			ModelMap modelMap, RedirectAttributes redirectAttributes, HttpSession session) {
 		if (!bindingResult.hasFieldErrors("user")&&!bindingResult.hasFieldErrors("password")) {
 			if (userDao.acceptUser(user)) {
-				if (userDao.getUserFromDbByName(user.getName()).getIsAdmin() != null) {
+				if (userDao.getUserFromDbByName(user.getName()).getIsAdmin() == 1) {
 					user.setIsAdmin(1);
 						} else {
 					user.setIsAdmin(0);

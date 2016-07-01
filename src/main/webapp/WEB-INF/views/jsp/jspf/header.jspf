@@ -84,6 +84,7 @@
 											name="user" height="30" width="40" /> 
 											<c:if test="${user.isAdmin==1}">
 										<a href="admin" class="btn btn-secondary  btn-warning btn-xs">Администраторская </a>
+										
 									</c:if>
 									<a class="btn btn-danger btn-xs" href="logout">Выход</a>
 									</p>
