@@ -42,6 +42,7 @@ public class LoginController {
 	}
 
 	private void addAuthentication(HttpSession session) {
+
 		session.setAttribute("go", "true");
 	}
 
@@ -55,29 +56,27 @@ public class LoginController {
 
 		logger.info(messageSource.getMessage("locale", new String[] { locale.getDisplayName(locale) }, locale));
 
-		return "login";
+		return "main";
 	}
 
 	@RequestMapping(value = "/check-user", method = RequestMethod.POST)
 	public String checkUser(Locale locale, @Valid @ModelAttribute("user") User user, BindingResult bindingResult,
 			ModelMap modelMap, RedirectAttributes redirectAttributes, HttpSession session) {
-		if (user.isGuest() == true) {
-			/* modelMap.addAttribute("user", new User("AnonimGuest")); */
-			// не работает. после редиректо остается только user
-
-			session.setAttribute("user", new User("AnonimGuest"));
-			addAuthentication(session);
-			return "redirect:/main";
-		}
-		if (!bindingResult.hasErrors()) {
+		if (!bindingResult.hasFieldErrors("user")&&!bindingResult.hasFieldErrors("password")) {
 			if (userDao.acceptUser(user)) {
+				if (userDao.getUserFromDbByName(user.getName()).getIsAdmin() != null) {
+					user.setIsAdmin(1);
+				} else {
+					user.setIsAdmin(0);
+				}
 				addAuthentication(session);
-				return "redirect:/main";
-			} else
-				return "redirect:regpage";
+			} else {
+				redirectAttributes.addFlashAttribute("errorAuthentication",
+						"Пользователя с указанным логином и gаролем не существует");
+			}
 		}
 
-		return "redirect:/login";
+		return "redirect:/main";
 	}
 
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
@@ -96,7 +95,7 @@ public class LoginController {
 				return "redirect:/regpage";
 
 			}
-			return "redirect:/login";
+			return "redirect:/main";
 		} else {
 
 			return "redirect:/regpage";
@@ -118,7 +117,7 @@ public class LoginController {
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String login(Locale locale, HttpSession session, ModelMap model) {
 		removeAuthentication(session);
-		return "redirect:/login";
+		return "redirect:/";
 	}
 
 }

@@ -45,9 +45,6 @@ import by.murashko.sergey.entities.*;
 @SessionAttributes({ "genreList", "publisherList", "usersList" })
 
 public class AdminController {
-	
-		
-	
 
 	@Autowired
 	private MessageSource messageSource;
@@ -87,27 +84,28 @@ public class AdminController {
 	public Publisher createNewPublisher() {
 		return new Publisher();
 	}
-	
+
 	@ModelAttribute
 	public List createNewGenreList() {
 		return genreDao.getGenres();
 	}
-	
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String admin(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			ModelMap modelMap, RedirectAttributes redirectAttributes) {
-	
+
 		modelMap.addAttribute("authorList", authorDao.getAuthors());
 		modelMap.addAttribute("publisherList", publisherDao.getPublishers());
 		modelMap.addAttribute("genreList", genreDao.getGenres());
 		modelMap.addAttribute("bookList", bookDao.getBooks());
 		modelMap.addAttribute("userList", userDao.getAllUsers());
-		System.out.println("!!!!!!!!!!!!!!! GenrelistSIZE" +genreDao.getGenres().size() +"to string"+ genreDao.getGenres().toString());
-		
-/*if(request.getParameter("edit_book")!=null&&request.getAttribute("editBook")==null){
-	return "redirect:/admin?edit_bookList=true";
-}*/
+		System.out.println("!!!!!!!!!!!!!!! GenrelistSIZE" + genreDao.getGenres().size() + "to string"
+				+ genreDao.getGenres().toString());
+
+		/*
+		 * if(request.getParameter("edit_book")!=null&&request.getAttribute(
+		 * "editBook")==null){ return "redirect:/admin?edit_bookList=true"; }
+		 */
 		return "admin";
 	}
 
@@ -122,17 +120,20 @@ public class AdminController {
 			book.setContent(contentFile.getBytes());
 			book.setImage(imageFile.getBytes());
 			book.setAuthor(authorDao.getAuthorByName(author));
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" +author);
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" +genre);
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" +publisher);
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + author);
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + genre);
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + publisher);
 			book.setPublisher(publisherDao.getPublisherByName(publisher));
 			book.setGenre(genreDao.getGenreByName(genre));
 			if (Integer.parseInt(request.getParameter("errorPage")) != 0) {
-		//	throw new Exception("Error in form add book");
+				// throw new Exception("Error in form add book");
 				request.getParameter("errorPage").length();
-				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" +request.getParameter("errorPage"));
-				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" +request.getParameter("errorPage"));
-				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" +request.getParameter("errorPage").length());
+				System.out
+						.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + request.getParameter("errorPage"));
+				System.out
+						.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + request.getParameter("errorPage"));
+				System.out.println(
+						"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + request.getParameter("errorPage").length());
 			}
 			bookDao.addBook(book);
 		} catch (Exception e) {
@@ -373,35 +374,36 @@ public class AdminController {
 			@RequestParam("publisher") String publisher, @RequestParam("imageFile") MultipartFile imageFile,
 			HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelMap modelMap,
 			RedirectAttributes redirectAttributes) throws IOException {
-		
-		String redidect= "redirect:/admin?edit_bookList=true";
+
+		String redidect = "redirect:/admin?edit_bookList=true";
 		try {
-		book.setId(Long.parseLong(request.getParameter("id")));
-		Book editBook =bookDao.getBookById(Long.parseLong(request.getParameter("id")));
-			
-			if (contentFile.getSize()<1) {
+			book.setId(Long.parseLong(request.getParameter("id")));
+			Book editBook = bookDao.getBookById(Long.parseLong(request.getParameter("id")));
+
+			if (contentFile.getSize() < 1) {
 				book.setContent(editBook.getImage());
-			}else{book.setContent(contentFile.getBytes());}
-			if (imageFile.getSize()<1) {
+			} else {
+				book.setContent(contentFile.getBytes());
+			}
+			if (imageFile.getSize() < 1) {
 				book.setImage(editBook.getImage());
-			}else{
+			} else {
 				book.setImage(imageFile.getBytes());
-				}
-			
-			if (author == null||publisher == null||genre == null) {
+			}
+
+			if (author == null || publisher == null || genre == null) {
 				throw new Exception("Error in form add book");
 			}
-					
+
 			book.setAuthor(authorDao.getAuthorByName(author));
 			book.setPublisher(publisherDao.getPublisherByName(publisher));
 			book.setGenre(genreDao.getGenreByName(genre));
-			//if (request.getParameter("errorPage") != "0") {
-			//	throw new Exception("Error in form add book");
-			//}
-						
-		
+			// if (request.getParameter("errorPage") != "0") {
+			// throw new Exception("Error in form add book");
+			// }
+
 			bookDao.upgdateBook(book);
-		
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL",
@@ -411,25 +413,23 @@ public class AdminController {
 		redirectAttributes.addFlashAttribute("adminInfoPreAction_OK", "Книга успешно изменена.");
 		return redidect;
 	}
-	
+
 	@RequestMapping(value = "/redirect_editbook", method = RequestMethod.POST)
 	public String redirect_editbook(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			ModelMap modelMap, RedirectAttributes redirectAttributes) throws Exception {
-		
-		
+
 		logger.info("IN   '/redirect_editbook' method");
 		try {
-		String bookID = request.getParameter("editBookID");
-				
-			
+			String bookID = request.getParameter("editBookID");
+
 			if (bookID != null) {
-				redirectAttributes.addFlashAttribute("editBook", bookDao.getBookById(Long.parseLong(request.getParameter("editBookID"))));
-			
+				redirectAttributes.addFlashAttribute("editBook",
+						bookDao.getBookById(Long.parseLong(request.getParameter("editBookID"))));
+
 				return "redirect:/admin?edit_book=true";
-			}else{
+			} else {
 				throw new Exception("Error in form editbooklist");
-						}
-			
+			}
 		} catch (Exception e) {
 			logger.warn("Exceptiont in /redirect_editbook' method");
 			e.printStackTrace();
@@ -437,8 +437,7 @@ public class AdminController {
 					"Возникли проблемы. Скорее всего книга не выбрана. ");
 			return "redirect:/admin?edit_bookList=true";
 		}
-		
+
 	}
-	
 
 }

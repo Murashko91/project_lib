@@ -1,28 +1,49 @@
 
 <%@ page pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-<div class="letters">
-	<jsp:useBean id="letterList"
-		class="by.murashko.sergey.web.beans.LetterList" scope="application" />
-	<%
-		String searchLetter = null;
-		if (request.getParameter("letter") != null) {
-			searchLetter = request.getParameter("letter");
-			//session.setAttribute("letter", searchLetter);
-		} /* else if (session.getAttribute("letter") != null) {
-			searchLetter = session.getAttribute("letter").toString();
-		} */
-		char[] letters = letterList.getRusLetters();
-		for (int i = 0; i < letters.length; i++) {
-			if (searchLetter != null && searchLetter.toString().toUpperCase().charAt(0) == letters[i]) {
-	%>
-	<a style="color: red;" href="books?letter=<%=letters[i]%>"><%=letters[i]%></a>
-	<%
-		} else {
-	%>
-	<a href="books?letter=<%=letters[i]%>"><%=letters[i]%></a>
-	<%
-		}
-		}
-	%>
+<div  class="table-responsive  col-lg-8 col-md-7" style="margin: 0px;padding: 0px;">
+	<table class="table ">
+		<tr><td style="margin: 0px;padding: 0px;">
+
+			<jsp:useBean id="letterList"
+				class="by.murashko.sergey.web.beans.LetterList" scope="application" />
+			<%
+				String searchLetter = null;
+				if (request.getParameter("letter") != null) {
+					searchLetter = request.getParameter("letter");
+				}
+				char[] letters = letterList.getRusLetters();
+				for (int i = 0; i < letters.length; i++) {
+					if (searchLetter != null && searchLetter.toUpperCase().charAt(0) == letters[i]) {
+			%>
+			<a class="btn btn-primary " href="books?letter=<%=letters[i]%>"><strong><%=letters[i]%></strong></a>
+			<%
+				} else {
+			%>
+			<a  class="btn btn-default btn-xs text-lowercase" href="books?letter=<%=letters[i]%>"><small><%=letters[i]%></small></a>
+			<%
+				}
+				}
+			%>
+
+		</td></tr>
+	</table>
 </div>
+	<div class="col-lg-4 col-md-5" align="right" style="margin: 0px; padding: 0px;">
+			
+					
+				<form name="search_form" method="GET" action="books" role="form"
+					class="form  form-inline">
+					<div class="form-group"> 
+						<input type="text" name="search_string" value="поиск..."
+							 class="form-control"  /> <select name="search_type"
+							class="form-control" style="padding: 0px;"  >
+							<option><spring:message code="search_book" /></option>
+							<option ><spring:message code="search_author" /></option>
+							
+						</select> <input class="form-control btn btn-primary btn-md" type="submit"
+							value="Поиск"  />
+					</div>
+				</form>
+			</div>

@@ -16,15 +16,15 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter { // impleme
 		
 	
 		
-		
+		/*
 		
 		if ((request.getSession().getAttribute("go")==null)
 				&&(request.getRequestURI().contains("main")||request.getRequestURI().contains("books"))) {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
-							response.sendRedirect(request.getContextPath() );
+							//response.sendRedirect(request.getContextPath() );
 			
-		}
+		}*/
 	}
 
 }

@@ -35,7 +35,7 @@ import by.murashko.sergey.dao.interfaces.*;
 import by.murashko.sergey.entities.*;
 
 @Controller
-@SessionAttributes({"genreList","user"})
+@SessionAttributes({ "genreList", "user" })
 
 public class LibraryController {
 
@@ -64,9 +64,15 @@ public class LibraryController {
 		return genreDao.getGenres();
 	}
 
+	@ModelAttribute
+	public User createNewUser() {
+		return new User("User");
+	}
+
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public String gomain(@ModelAttribute("genreList") List<Genre> genreList, HttpServletRequest request,
-			HttpServletResponse response, HttpSession session) {
+	public String gomain(@ModelAttribute("genreList") List<Genre> genreList, @Valid @ModelAttribute("user") User user,
+			BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response,
+			HttpSession session) {
 		logger.info("go to main-page on library");
 
 		return "main";
@@ -78,21 +84,23 @@ public class LibraryController {
 		logger.info("go books-page on library");
 
 		// Search by Genre
-		if (request.getParameter("genre_id") != null && request.getParameter("genre_id")!="0"){
-			long genreId = Long.valueOf(request.getParameter("genre_id"));
+		if (request.getParameter("genre_id") != null && Integer.parseInt((request.getParameter("genre_id"))) != 0) {
+			long genreId = Long.parseLong((request.getParameter("genre_id")));
 
 			for (Genre genre : genreList) {
 				if (genre.getId() == genreId) {
 					bookList = bookDao.getBooks(genre);
 				}
 			}
-		}else{bookList = bookDao.getBooks();}
+		} else {
+			bookList = bookDao.getBooks();
+		}
 
 		// Search by Author(author) and by string name book
 		if (request.getParameter("search_string") != null) {
-			String search_string = request.getParameter("search_string");
-			if (request.getParameter("search_type") == messageSource.getMessage("search_author", new String[] {},
-					locale)) {
+			String search_string = request.getParameter("search_string").substring(0);
+			if ((request.getParameter("search_type")
+					.contains(messageSource.getMessage("search_author", new String[] {}, locale)))) {
 				bookList = bookDao.getBooks(new Author(search_string));
 			} else {
 				bookList = bookDao.getBooks(search_string);
@@ -108,24 +116,19 @@ public class LibraryController {
 		return "books";
 
 	}
-	
-	
+
 	@RequestMapping(value = "/imageController/{bookId}")
 	@ResponseBody
-	public byte[] getImage(@PathVariable long bookId)  {
+	public byte[] getImage(@PathVariable long bookId) {
 		byte[] image = bookDao.getImage(bookId);
-	  return image;
+		return image;
 	}
-	
+
 	@RequestMapping(value = "/contentController/{bookId}")
 	@ResponseBody
-	public byte[] getContent(@PathVariable long bookId)  {
+	public byte[] getContent(@PathVariable long bookId) {
 		byte[] content = bookDao.getContent(bookId);
-	  return content;
+		return content;
 	}
-	
-	
-	
-	
 
 }

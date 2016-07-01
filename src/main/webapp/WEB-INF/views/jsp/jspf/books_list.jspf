@@ -1,0 +1,60 @@
+<%@page import="java.util.ArrayList"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+
+			<h5 style="text-align: left; margin-top: 20px;">Найдено книг:
+				${fn:length(bookList)}</h5>
+		
+	<c:forEach items="${bookList}" var="book">
+		<div class="row">
+			<div class="col-md-12"><big><p class="text-center bg-primary">${book.name}</p></big></div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<a href="contentController/${book.id}.pdf"><img
+					src="imageController/${book.id}.jpg" height="250" width="190"
+					alt="Обложка" /></a>
+			</div>
+			<div class="col-md-4">
+
+				<table class="table">
+					<tr>
+						<td>Автор:</td>
+						<td>${book.author.fio}</td>
+					</tr>
+					<tr>
+						<td>Количество страниц:</td>
+						<td>${book.pageCount}</td>
+					</tr>
+					<tr>
+						<td>Год издания:</td>
+						<td>${book.publishYear}</td>
+					</tr>
+					<tr>
+						<td>Издательство:</td>
+						<td>${book.publisher}</td>
+					</tr>
+					<tr>
+						<td>ISBN:</td>
+						<td>${book.isbn}</td>
+					</tr>
+					<tr>
+						<td colspan="2"><a href="contentController/${book.id}.pdf">Читать</a></td>
+					</tr>
+
+				</table>
+			</div>
+
+			<div class="col-md-5">${book.descr}</div>
+		</div>
+	</c:forEach>
+
+
+
+

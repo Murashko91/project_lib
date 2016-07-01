@@ -19,10 +19,10 @@ public class User {
 	// Имя должно быть больше 5 знаков
 	private String name;
 
-	@Size(min = 5, max = 10, message = "{password.size.error}")
+	@Size(min = 4, max = 10, message = "{password.size.error}")
 	private String password;
 
-	private boolean admin;
+	private int isAdmin;
 	private boolean guest;
 
 	public boolean isGuest() {
@@ -44,12 +44,14 @@ public class User {
 		this.mail = mail;
 	}
 
-	public boolean isAdmin() {
-		return admin;
+	
+
+	public int getIsAdmin() {
+		return isAdmin;
 	}
 
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
+	public void setIsAdmin(int isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 
 	public String getName() {
