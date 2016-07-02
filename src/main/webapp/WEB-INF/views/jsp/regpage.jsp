@@ -12,6 +12,7 @@
 <div class="container">
 	<div class="row">
 		<%@include file="jspf/reg_header.jspf"%></div>
+		<hr style="margin:0; padding: 0;  ">
 	<div class="row">
 		<%@include file="jspf/letters.jspf"%>
 	</div>
