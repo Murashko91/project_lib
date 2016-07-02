@@ -8,6 +8,8 @@
 <head>
 <link href="<c:url value="/resources/css/bootstrap.css" />"
 	rel="stylesheet">
+	<link href="<c:url value="/resources/css/home.css" />"
+	rel="stylesheet">
 <script src="https://code.jquery.com/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
@@ -36,6 +38,7 @@
 
 
 	<div class="container header">
+	${firstBooksLetters}
 		<div class="row" style="height: 12px">
 			<div class="col-md-12">
 				<!-- Верхняя черная полоска -->
@@ -154,6 +157,9 @@
 						class="btn btn-secondary  btn-default btn-lg ">О нас</a> <a
 						href="#" class="btn btn-secondary  btn-default btn-lg">Связь
 						c администарацией</a>
+						
+						<c:forEach items="${firstBooksLetters}" var="letter">
+						<p>${letter}</p></c:forEach>
 				</div>
 
 			</div>

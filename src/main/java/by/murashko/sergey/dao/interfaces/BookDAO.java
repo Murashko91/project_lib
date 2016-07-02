@@ -6,6 +6,7 @@ import by.murashko.sergey.entities.Book;
 import by.murashko.sergey.entities.Genre;
 
 import java.util.List;
+import java.util.TreeSet;
 
 
 public interface BookDAO {
@@ -21,6 +22,8 @@ public interface BookDAO {
     public void addBook(Book book);
     public void removeBook(Long id);
 	void upgdateBook(Book book);
+	TreeSet<Character> getListFirstLetterBooks();
+	List<Book> getLiteBookList();
  
 
 }

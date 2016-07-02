@@ -26,7 +26,7 @@
 
 
 					<tr>
-						<td><label > <input type="checkbox" value="${book.id}"
+						<td  class="col-md-2"><label > <input type="checkbox" value="${book.id}"
 								name="bookID_${book.id}"> Удалить
 						</label>
 							<p>
@@ -34,7 +34,7 @@
 									width="100" alt="Обложка" />
 							</p></td>
 
-						<td><p>
+						<td  class="col-md-3"><p>
 								<strong><big>${book.name}</big></strong>
 							</p>
 
@@ -43,7 +43,7 @@
 							<p>Количество страниц:: ${book.pageCount}</p>
 							<p>Издательство: ${book.publisher}</p></td>
 
-						<td><p></p> ${book.descr}</td>
+						<td class="col-md-7"><p></p> ${book.descr}</td>
 					</tr>
 
 				</c:forEach>

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import by.murashko.sergey.dao.interfaces.BookDAO;
 import by.murashko.sergey.entities.Author;
 import by.murashko.sergey.entities.Book;
@@ -21,6 +20,7 @@ import by.murashko.sergey.entities.Users;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.TreeSet;
 
 @Component
 public class BookDAOImpl implements BookDAO {
@@ -29,6 +29,7 @@ public class BookDAOImpl implements BookDAO {
 	private SessionFactory sessionFactory;
 
 	private ProjectionList bookProjection;
+	private ProjectionList miniBookProjection;
 
 	public BookDAOImpl() {
 		bookProjection = Projections.projectionList();
@@ -43,6 +44,10 @@ public class BookDAOImpl implements BookDAO {
 		bookProjection.add(Projections.property("descr"), "descr");
 		bookProjection.add(Projections.property("rating"), "rating");
 
+		miniBookProjection = Projections.projectionList();
+		miniBookProjection.add(Projections.property("id"), "id");
+		miniBookProjection.add(Projections.property("name"), "name");
+
 	}
 
 	/*
@@ -52,13 +57,45 @@ public class BookDAOImpl implements BookDAO {
 	 * createBookList(createBookCriteria().add(Restrictions.eq("b.id", id)));
 	 * byte[] image = books.get(0).getImage(); return image; }
 	 */
-	
 
 	@Transactional
 	@Override
 	public List<Book> getBooks() {
+
 		List<Book> books = createBookList(createBookCriteria());
 		return books;
+	}
+
+	@Transactional
+	@Override
+	public List<Book> getLiteBookList() {
+
+		Criteria criteria = DetachedCriteria.forClass(Book.class)
+				.getExecutableCriteria(sessionFactory.getCurrentSession());
+		criteria.addOrder(Order.asc("name")).setProjection(miniBookProjection)
+				.setResultTransformer(Transformers.aliasToBean(Book.class));
+
+		List<Book> books = criteria.list();
+		return books;
+	}
+
+	@Transactional
+	@Override
+	public TreeSet<Character> getListFirstLetterBooks() {
+		List<Book> books = getLiteBookList();
+
+		TreeSet<Character> letters = new TreeSet<Character>();
+		for (Book book : books) {
+			String bookName = book.getName().toUpperCase();
+
+			while (bookName.charAt(0) == ' ') {
+				bookName = bookName.substring(1);
+			}
+			letters.add(bookName.charAt(0));
+
+		}
+
+		return letters;
 	}
 
 	@Transactional
@@ -114,55 +151,47 @@ public class BookDAOImpl implements BookDAO {
 				.setResultTransformer(Transformers.aliasToBean(Book.class));
 		return criteria.list();
 	}
-/*	
+	/*
+	 * @Transactional
+	 * 
+	 * @Override public Book getBookById(Long id){ return (Book)
+	 * sessionFactory.getCurrentSession().createCriteria(Book.class).add(
+	 * Restrictions.eq("id", id)).uniqueResult();
+	 * 
+	 * }
+	 */
+
 	@Transactional
 	@Override
-	public Book  getBookById(Long id){
-		return (Book) sessionFactory.getCurrentSession().createCriteria(Book.class).add(Restrictions.eq("id", id)).uniqueResult();
-		
-	}*/
-	
-	
-	@Transactional
-	@Override
-	public Book  getBookById(Long id){
-	
-		return (Book)sessionFactory.getCurrentSession().get(Book.class, id);
+	public Book getBookById(Long id) {
+
+		return (Book) sessionFactory.getCurrentSession().get(Book.class, id);
 	}
 
-
-	
-	
-	
-	
-	
 	@Transactional
 	@Override
 	public byte[] getImage(Long id) {
-			
+
 		byte[] image = getBookById(id).getImage();
 		return image;
 	}
-	
-	
-	
+
 	@Transactional
 	@Override
 	public byte[] getContent(Long id) {
 		byte[] content = getBookById(id).getContent();
 		return content;
-		
-		
+
 	}
+
 	@Transactional
 	@Override
-	public void addBook(Book book){
+	public void addBook(Book book) {
 		Session session = this.sessionFactory.getCurrentSession();
 
-		
 		session.save(book);
 	}
-	
+
 	@Override
 	@Transactional
 	public void removeBook(Long id) {
@@ -172,17 +201,12 @@ public class BookDAOImpl implements BookDAO {
 			session.delete(book);
 		}
 	}
-	
+
 	@Override
 	@Transactional
-	public void upgdateBook(Book book){
+	public void upgdateBook(Book book) {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.update(book);
 	}
-	
-	
-
-	
-	
 
 }

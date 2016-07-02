@@ -42,7 +42,7 @@ import by.murashko.sergey.dao.interfaces.*;
 import by.murashko.sergey.entities.*;
 
 @Controller
-@SessionAttributes({ "genreList", "publisherList", "usersList", })
+@SessionAttributes({ "genreList", "publisherList", "usersList", "firstLetterSet" })
 
 public class AdminController {
 
@@ -90,10 +90,10 @@ public class AdminController {
 		return new Users();
 	}
 
-	@ModelAttribute
+	/*@ModelAttribute("genreList")
 	public List createNewGenreList() {
 		return genreDao.getGenres();
-	}
+	}*/
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String admin(HttpServletRequest request, HttpServletResponse response, HttpSession session,
@@ -104,13 +104,9 @@ public class AdminController {
 		modelMap.addAttribute("genreList", genreDao.getGenres());
 		modelMap.addAttribute("bookList", bookDao.getBooks());
 		modelMap.addAttribute("userList", userDao.getAllUsers());
-		System.out.println("!!!!!!!!!!!!!!! GenrelistSIZE" + genreDao.getGenres().size() + "to string"
-				+ genreDao.getGenres().toString());
-
-		/*
-		 * if(request.getParameter("edit_book")!=null&&request.getAttribute(
-		 * "editBook")==null){ return "redirect:/admin?edit_bookList=true"; }
-		 */
+		modelMap.addAttribute("firstLetterSet", bookDao.getListFirstLetterBooks());
+		
+		 
 		return "admin";
 	}
 
@@ -125,20 +121,13 @@ public class AdminController {
 			book.setContent(contentFile.getBytes());
 			book.setImage(imageFile.getBytes());
 			book.setAuthor(authorDao.getAuthorByName(author));
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + author);
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + genre);
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + publisher);
+			
 			book.setPublisher(publisherDao.getPublisherByName(publisher));
 			book.setGenre(genreDao.getGenreByName(genre));
 			if (Integer.parseInt(request.getParameter("errorPage")) != 0) {
 				// throw new Exception("Error in form add book");
 				request.getParameter("errorPage").length();
-				System.out
-						.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + request.getParameter("errorPage"));
-				System.out
-						.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + request.getParameter("errorPage"));
-				System.out.println(
-						"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + request.getParameter("errorPage").length());
+			
 			}
 			bookDao.addBook(book);
 		} catch (Exception e) {

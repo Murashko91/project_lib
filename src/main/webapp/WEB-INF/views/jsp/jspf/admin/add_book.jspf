@@ -132,7 +132,7 @@
 					<td><form:label path="descr">
 			Введите описание
 			</form:label></td>
-					<td><form:input  path="descr" class="form-control" /></td>
+					<td><form:textarea rows="2"  path="descr" class="form-control" /></td>
 				</tr>
 
 

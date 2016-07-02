@@ -24,7 +24,7 @@ import by.murashko.sergey.dao.interfaces.UserDAO;
 import by.murashko.sergey.entities.*;
 
 @Controller
-@SessionAttributes("user")
+@SessionAttributes({"user"})
 
 public class LoginController {
 
@@ -40,6 +40,10 @@ public class LoginController {
 	public Users createNewUser() {
 		return new Users("User", "password", "mail@mail.ml");
 	}
+	
+	
+	
+	
 
 	private void addAuthentication(HttpSession session) {
 
@@ -51,14 +55,7 @@ public class LoginController {
 		session.removeAttribute("go");
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String main(@ModelAttribute Users user, HttpSession session, Locale locale, ModelMap model) {
-		logger.info(locale.getDisplayLanguage());
-
-		logger.info(messageSource.getMessage("locale", new String[] { locale.getDisplayName(locale) }, locale));
-
-		return "main";
-	}
+	
 
 	@RequestMapping(value = "/check-user", method = RequestMethod.POST)
 	public String checkUser(Locale locale, @Valid @ModelAttribute("user") Users user, BindingResult bindingResult,

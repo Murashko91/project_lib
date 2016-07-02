@@ -146,8 +146,8 @@
 					<td><form:label path="descr">
 			Введите описание
 			</form:label></td>
-					<td><form:input value="${editBook.descr}" path="descr"
-							class="form-control" /></td>
+					<td><textarea   name="descr" id="descr"
+							class="form-control" >${editBook.descr}</textarea></td>
 				</tr>
 
 

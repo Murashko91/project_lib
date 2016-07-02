@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,9 +36,10 @@ import by.murashko.sergey.dao.interfaces.*;
 import by.murashko.sergey.entities.*;
 
 @Controller
-@SessionAttributes({ "genreList", "user" })
+@SessionAttributes({ "genreList", "user", "firstLetterSet" })
 
 public class LibraryController {
+
 
 	@Autowired
 	private MessageSource messageSource;
@@ -69,13 +71,28 @@ public class LibraryController {
 		return new Users("User", "password", "mail@mail.ml");
 	}
 
+	@ModelAttribute("firstLetterSet")
+	public Set<Character> createNewFirstLetterSet() {
+
+		return bookDao.getListFirstLetterBooks();
+	}
+
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String main(@ModelAttribute Users user, HttpSession session, Locale locale, ModelMap model) {
+		logger.info(locale.getDisplayLanguage());
+
+		logger.info(messageSource.getMessage("locale", new String[] { locale.getDisplayName(locale) }, locale));
+
+		return "main";
+	}
 
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public String gomain(@ModelAttribute("genreList") List<Genre> genreList, @Valid @ModelAttribute("user") Users user,
-			BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response,
-			HttpSession session) {
+	public String gomain(@Valid @ModelAttribute("user") Users user, BindingResult bindingResult,
+			HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+	
 		logger.info("go to main-page on library");
-
+			//	session.setAttribute("firstBooksLetters", bookDao.getListFirstLetterBooks());
+	
 		return "main";
 	}
 

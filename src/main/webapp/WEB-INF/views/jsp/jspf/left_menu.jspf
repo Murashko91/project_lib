@@ -3,27 +3,67 @@
 <%@page import="by.murashko.sergey.entities.*"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 <%@ page pageEncoding="UTF-8"%>
-<div class="list-group">
 
-	<a class="list-group-item"href="books?genre_id=0">Все книги</a>
+
+<div class="panel-group">
+	<div class="panel panel-default">
+	
+		<a class="list-group-item list-group-item-info" href="books?genre_id=0">Все книги</a> <a
+			data-toggle="collapse" class="list-group-item list-group-item-info" href="#collapse1">Выбрать
+			жанр</a>
+			
+		<div id="collapse1" class="panel-collapse collapse">
+			<div class="list-group">
+				<c:forEach items="${genreList}" var="genre">
+
+					<c:if test="${param.genre_id != 0 && param.genre_id == genre.id}">
+
+						<a class="list-group-item active  href="books?genre_id=${genre.id}">${genre.name}</a>
+					</c:if>
+
+					<c:if test="${param.genre_id==0|| param.genre_id != genre.id}">
+
+						<a class="list-group-item" href="books?genre_id=${genre.id}">${genre.name}</a>
+					</c:if>
+
+				</c:forEach>
+			</div>
+
+		</div>
 		
-	<c:forEach items="${genreList}" var="genre">
+		<a
+			data-toggle="collapse" class="list-group-item list-group-item-info" href="#collapse2">По алфавиту
+			</a>
+		
+		<div id="collapse2" class="panel-collapse collapse">
+			<div class="list-group">
+			
+				<c:forEach items="${firstLetterSet}" var="firstLetter">
 
-		<c:if test="${param.genre_id != 0 && param.genre_id == genre.id}">
+					<c:if test="${param.letter != null&& param.letter.charAt(0) == firstLetter}">
+				
 
-			<a  class="list-group-item active  href="books?genre_id=${genre.id}">${genre.name}</a>
-		</c:if>
+						<a class="btn btn-primary " href="books?letter=${firstLetter}"><strong>${firstLetter}</strong></a>
+					</c:if>
 
-		<c:if test="${param.genre_id==0|| param.genre_id != genre.id}">
+					<c:if test="${param.letter==null||param.letter.charAt(0) != firstLetter}">
 
-			<a class="list-group-item" href="books?genre_id=${genre.id}">${genre.name}</a>
-		</c:if>
+					<a  class="btn btn-default btn-sm text-lowercase" href="books?letter=${firstLetter}">${firstLetter}</a>
+					</c:if>
 
-	</c:forEach>
+				</c:forEach>
+			</div>
 
+		</div>
+		
+	</div>
 </div>
+
+
+
+
+
 
 
 
