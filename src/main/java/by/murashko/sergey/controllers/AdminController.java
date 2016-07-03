@@ -42,7 +42,7 @@ import by.murashko.sergey.dao.interfaces.*;
 import by.murashko.sergey.entities.*;
 
 @Controller
-@SessionAttributes({ "genreList", "publisherList", "usersList", "firstLetterSet" })
+@SessionAttributes({ /*"genreList", "publisherList", "usersList", "firstLetterSet",*/ "user" })
 
 public class AdminController {
 
@@ -78,11 +78,6 @@ public class AdminController {
 		return new Author();
 	}
 	
-	@ModelAttribute("messageList")
-	public List<Messages> createNewMessagelist() {
-		return messageDAO.getMessages();
-	}
-
 	@ModelAttribute
 	public Genre createNewGenre() {
 		return new Genre();
@@ -98,10 +93,7 @@ public class AdminController {
 		return new Users();
 	}
 
-	@ModelAttribute("genreList")
-	public List createNewGenreList() {
-		return genreDao.getGenres();
-	}
+	
 
 	
 
@@ -116,8 +108,9 @@ public class AdminController {
 		modelMap.addAttribute("bookList", bookDao.getBooks());
 		modelMap.addAttribute("userList", userDao.getAllUsers());
 		modelMap.addAttribute("firstLetterSet", bookDao.getListFirstLetterBooks());
-		
-		 
+		modelMap.addAttribute("messageList", messageDAO.getMessages());
+
+	
 		return "admin";
 	}
 

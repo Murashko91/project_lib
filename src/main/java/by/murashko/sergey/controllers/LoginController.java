@@ -125,7 +125,7 @@ public class LoginController {
 		//removeAuthentication(session);
 		
 		        session.invalidate(); /// при этом текущий user с сессии не удаляется. Не дает аннотация  Session в началае. над дополнительно подчтать документацию
-		   		       
+		   		       user.setIsAdmin(0);
 	
 		return "redirect:/";
 	}
