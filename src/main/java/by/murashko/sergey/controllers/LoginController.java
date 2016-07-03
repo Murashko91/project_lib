@@ -71,9 +71,11 @@ public class LoginController {
 				addAuthentication(session);
 			} else {
 				redirectAttributes.addFlashAttribute("errorAuthentication",
-						"Пользователя с указанным логином и gаролем не существует");
+						"Пользователя с указанным логином и паролем не существует");
 			}
 		}
+		
+	
 
 		return "redirect:/main";
 	}
@@ -119,9 +121,12 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String login(@ModelAttribute("user") Users user,Locale locale, HttpSession session, ModelMap model) {
-		removeAuthentication(session);
-		user.setIsAdmin(0);
+	public String login(@ModelAttribute("user") Users user, HttpSession session) {
+		//removeAuthentication(session);
+		
+		        session.invalidate(); /// при этом текущий user с сессии не удаляется. Не дает аннотация  Session в началае. над дополнительно подчтать документацию
+		   		       
+	
 		return "redirect:/";
 	}
 

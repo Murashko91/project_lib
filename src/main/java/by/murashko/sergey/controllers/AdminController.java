@@ -57,6 +57,9 @@ public class AdminController {
 
 	@Autowired
 	private UserDAO userDao;
+	
+	@Autowired
+	private MessageDAO messageDAO;
 
 	@Autowired
 	private BookDAO bookDao;
@@ -74,6 +77,11 @@ public class AdminController {
 	public Author createNewAuthor() {
 		return new Author();
 	}
+	
+	@ModelAttribute("messageList")
+	public List<Messages> createNewMessagelist() {
+		return messageDAO.getMessages();
+	}
 
 	@ModelAttribute
 	public Genre createNewGenre() {
@@ -90,11 +98,14 @@ public class AdminController {
 		return new Users();
 	}
 
-	/*@ModelAttribute("genreList")
+	@ModelAttribute("genreList")
 	public List createNewGenreList() {
 		return genreDao.getGenres();
-	}*/
+	}
 
+	
+
+	
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String admin(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			ModelMap modelMap, RedirectAttributes redirectAttributes) {
@@ -296,6 +307,47 @@ public class AdminController {
 		redirectAttributes.addFlashAttribute("adminInfoPreAction_OK", "Выбранные жанры успешно удалены. ");
 		return redirect;
 	}
+	
+	
+	
+	
+	@RequestMapping(value = "/post", method = RequestMethod.POST)
+	public String post(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			ModelMap modelMap, RedirectAttributes redirectAttributes) throws Exception {
+
+		
+		int haveСhoiceDelMeter = 0;
+		String redirect = "redirect:/admin?post=true";
+		try {
+			Map<String, String[]> mapParamerts = request.getParameterMap();
+			Iterator<String> keySetIterator = mapParamerts.keySet().iterator();
+
+			while (keySetIterator.hasNext()) {
+
+				String key = keySetIterator.next();
+				if (key.contains("messageID_")) {
+					logger.info("key_delMessage: " + key + "ID: " + (mapParamerts.get(key))[0]);
+					haveСhoiceDelMeter++;
+					messageDAO.removeMessage(Integer.parseInt(mapParamerts.get(key)[0]));
+					
+				}
+			}
+			if (haveСhoiceDelMeter == 0) {
+				redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL", ":Сообщение не выбрано. ");
+				return redirect;
+			}
+		} catch (Exception e) {
+			logger.warn("Exceptiont in /removegenre' method");
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("adminInfoPreAction_FALL", "Возникли проблемы при удалении сообщения. ");
+			return redirect;
+		}
+		redirectAttributes.addFlashAttribute("adminInfoPreAction_OK", "Выбранные жанры успешно удалены. ");
+		return redirect;
+	}
+	
+	
+	
 
 	@RequestMapping(value = "/removepublisher", method = RequestMethod.POST)
 	public String removepublisher(HttpServletRequest request, HttpServletResponse response, HttpSession session,

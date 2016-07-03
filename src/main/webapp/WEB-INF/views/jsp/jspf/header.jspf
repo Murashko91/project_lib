@@ -153,10 +153,20 @@
 
 			<div class="col-md-12 ">
 				<div class="btn-group " role="group">
-					<a href="main" class="btn btn-secondary  btn-default btn-lg  ">Главная</a> <a
-						class="btn btn-secondary  btn-default btn-lg ">О нас</a> <a
-						href="#" class="btn btn-secondary  btn-default btn-lg">Связь
-						c администарацией</a>
+					<a href="main" class="btn btn-secondary  btn-default btn-lg  ">Главная</a> <a href="main?onas"
+						class="btn btn-secondary  btn-default btn-lg ">О нас</a>
+						<c:if test="${go == null}">
+						
+									 <a
+						href="?connectadminerror=notnull" class="btn btn-secondary  btn-default btn-lg">Связь
+						c администарацией</a></c:if>
+						<c:if test="${go != null}">
+												 <a
+						href="?add_message=notnull" class="btn btn-secondary  btn-default btn-lg">Связь
+						c администарацией</a></c:if> <c:if test="${param.connectadminerror!=null&& go==null}">
+			<i  class="bg-danger" style="margin: 3px" >Только для зарегистрированных пользователей.</i>
+			
+			</c:if>
 						
 						<c:forEach items="${firstBooksLetters}" var="letter">
 						<p>${letter}</p></c:forEach>

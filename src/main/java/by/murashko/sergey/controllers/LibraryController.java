@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
@@ -40,7 +41,6 @@ import by.murashko.sergey.entities.*;
 
 public class LibraryController {
 
-
 	@Autowired
 	private MessageSource messageSource;
 
@@ -49,6 +49,10 @@ public class LibraryController {
 	private GenreDAO genreDao;
 	@Autowired
 	private AuthorDAO authorDao;
+	@Autowired
+	private MessageDAO messageDao;
+	@Autowired
+	private UserDAO userDao;
 
 	@Autowired
 	private BookDAO bookDao;
@@ -89,10 +93,11 @@ public class LibraryController {
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public String gomain(@Valid @ModelAttribute("user") Users user, BindingResult bindingResult,
 			HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-	
+
 		logger.info("go to main-page on library");
-			//	session.setAttribute("firstBooksLetters", bookDao.getListFirstLetterBooks());
-	
+		// session.setAttribute("firstBooksLetters",
+		// bookDao.getListFirstLetterBooks());
+
 		return "main";
 	}
 
@@ -147,6 +152,22 @@ public class LibraryController {
 	public byte[] getContent(@PathVariable long bookId) {
 		byte[] content = bookDao.getContent(bookId);
 		return content;
+	}
+
+	@RequestMapping(value = "/addmessage", method = RequestMethod.POST)
+	public String addmessage(@Valid @ModelAttribute("message") Messages message,
+			@RequestParam("user_name") String user_name, HttpServletRequest request, HttpServletResponse response,
+			HttpSession session, RedirectAttributes redirectAttributes) {
+		try {
+			message.setUsers(userDao.getUserFromDbByName(user_name));
+			messageDao.addMessage(message);
+		} catch (Exception e) {
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("addMessageError", "Ошибка при отправке сообщения");
+			return "redirect:/main";
+		}
+		redirectAttributes.addFlashAttribute("addMessage", "Сообщение отправлено.");
+		return "redirect:/main";
 	}
 
 }

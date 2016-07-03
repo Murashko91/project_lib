@@ -1,0 +1,60 @@
+
+<%@ page pageEncoding="UTF-8"%>
+
+
+<%@page import="java.util.ArrayList"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<div class="row text-info">
+	<div class="col-md-10">
+
+
+		<hr class="style14" style="margin: 0px;">
+
+		<form:form method="POST" action="post" autocomplete="true"
+		 class="form-group">
+			<p class="bg-success small">${adminInfoPreAction_OK}</p>
+			<p class="bg-danger small" style="margin-top: 0px;">${adminInfoPreAction_FALL}</p>
+			<table class="table table-hover">
+
+				<c:forEach items="${messageList}" var="message">
+
+
+					<tr>
+						<td class="col-md-2"><label> <input type="checkbox" name="messageID_${message.id}"
+								value="${message.id}"> Удалить
+												</td>
+
+						<td class="col-md-3"><p>
+								<big>${message.users.name}</big>
+							</p>
+</td>
+
+						<td class="col-md-7"><p></p> ${message.message}</td>
+					</tr>
+
+				</c:forEach>
+
+
+				<tr>
+					<td colspan="3" style="text-align: right;: red"><input
+						type="text" id="errorPage" name="errorPage" value="0"
+						style="display: none;"> <input type="submit"
+						class="btn btn-danger" value="Удалить"></td>
+				</tr>
+
+			</table>
+
+
+		</form:form>
+	</div>
+</div>
+
+
+
+
+

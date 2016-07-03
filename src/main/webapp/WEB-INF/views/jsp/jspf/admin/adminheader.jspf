@@ -163,7 +163,7 @@
 						<button class="btn btn-default  btn-lg dropdown-toggle"
 							type="button" data-toggle="dropdown">Служебная информация</button>
 						<ul class="dropdown-menu">
-							<li class="disabled"><a href="#">Почта администратора</a></li>
+							<li ><a href="?post=notnull">Почта администратора</a></li>
 							<li class="disabled"><a href="#">Статистика посещений</a></li>
 							<li class="disabled"><a href="#">..др</a></li>
 						</ul>

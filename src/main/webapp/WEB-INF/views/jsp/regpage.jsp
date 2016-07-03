@@ -38,7 +38,8 @@
 
 
 							<form:form method="POST" modelAttribute="user"
-								action="registration" class="box login">
+								action="registration" >
+									
 
 
 

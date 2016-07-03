@@ -76,5 +76,15 @@
 
 </c:if>
 
+<c:if test="${param.post!= null}">
+	
+<%@include file="jspf/admin/post.jspf"%>
+
+</c:if>
+
 <%@include file="jspf/footer.jspf"%>
+
+
+
+
 </div>

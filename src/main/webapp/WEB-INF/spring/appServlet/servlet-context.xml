@@ -83,6 +83,7 @@
 				<beans:value>by.murashko.sergey.entities.Publisher</beans:value>
 				<beans:value>by.murashko.sergey.entities.Author</beans:value>
 				<beans:value>by.murashko.sergey.entities.Users</beans:value>
+				<beans:value>by.murashko.sergey.entities.Messages</beans:value>
 			</beans:list>
 		</beans:property>
 		<beans:property name="hibernateProperties">
